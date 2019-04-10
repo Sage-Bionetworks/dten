@@ -10,7 +10,7 @@ RUN Rscript -e "install.packages('synapser', repos=c('http://ran.synapse.org', '
 
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R')" -e "biocLite('viper')" -e "biocLite('topGO')"  -e "biocLite('org.Hs.eg.db')"
 
-RUN Rscript -e "devtools::instal_github('sgosline/PCSF')"
+RUN Rscript -e "devtools::install_github('sgosline/PCSF')"
 
 
 COPY bin/runMetaViperOnTable.R /usr/local/bin/
