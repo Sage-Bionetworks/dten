@@ -8,7 +8,7 @@ RUN Rscript -e "install.packages('devtools')"
 RUN Rscript -e "install.packages('biomaRt')"
 RUN Rscript -e "install.packages('synapser', repos=c('http://ran.synapse.org', 'http://cran.fhcrc.org'))"
 
-RUN Rscript -e "source('http://bioconductor.org/biocLite.R')" -e "biocLite('viper')" -e "biocLite('topGO')  -e "biocLite('org.Hs.eg.db')"
+RUN Rscript -e "source('http://bioconductor.org/biocLite.R')" -e "biocLite('viper')" -e "biocLite('topGO')"  -e "biocLite('org.Hs.eg.db')"
 
 RUN Rscript -e "devtools::instal_github('sgosline/PCSF')"
 
