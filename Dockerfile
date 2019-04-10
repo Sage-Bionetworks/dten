@@ -8,6 +8,7 @@ RUN Rscript -e "install.packages('devtools')"
 RUN Rscript -e "install.packages('biomaRt')"
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R')" -e "biocLite('viper')" -e "biocLite('topGO')"
 RUN Rscript -e "source('http://bioconductor.org/biocLite.R')" -e "biocLite('org.Hs.eg.db')"
+RUN Rscript -e "devtools::instal_github('sgosline/PCSF')"
 
 
 COPY bin/runMetaViperOnTable.R /usr/local/bin/
