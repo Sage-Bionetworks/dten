@@ -57,6 +57,7 @@ getViperForCondition <- function(v.res,condition,pvalthresh=0.05,useEntrez=TRUE,
       inds=match(names(ret),xx)
       names(ret)<-names(xx)[inds]
   }
+
     return(ret)
     }
 
@@ -68,30 +69,31 @@ getNets<-function(){
 }
 
 
-getGeneEntrezMapping<-function(genes,idtype=c("hugo",'entrez'))){
+getGeneEntrezMapping<-function(genes){
 
     mart <- useMart('ensembl',dataset='hsapiens_gene_ensembl')
 
-    ##check id name to figure out hugo/enrez issue
-    if(idtype=='entrez'){
-        entrez_list <- getBM(filters ="entrezgene",
-                             attributes = c("hgnc_symbol", "entrezgene"),
-                             values =genes, mart = mart)
-    }
-    else if(idtype=='hugo'){
-
-        entrez_list <- getBM(filters ="hgnc_symbol",
-                             attributes = c("hgnc_symbol", "entrezgene"),
-                             values =genes, mart = mart)
-    }
-
-    }
+    entrez_list <- getBM(filters ="hgnc_symbol",
+                         attributes = c("hgnc_symbol", "entrezgene"),
+                         values =genes, mart = mart)%>%rename(gene='hgnc_symbol')
+    return(entrez_list)
+}
 
 
-combined.mat=reshape2::acast(tided.df,gene~sample,value.var="counts",fun.aggregate=function(x) mean(x,na.rm=T))
 
+getProteinsFromGenesCondition<-function(tidied.df,condition,idtype){
+    if(tolower(idtype)=='entrez')
+        tidied.df<-rename(tidied.df,entrezgene='gene')
+    else
+        tidied.df<-tidied.df%>%left_join(getGeneEntrezMapping(tidied.df$gene))
+    combined.mat<-reshape2::acast(tidied.df,entrezgene~sample,value.var="counts",fun.aggregate=function(x) mean(x,na.rm=T))
 
-getProteinsFromGenesCondition<-function(combined.mat,colsInCondition){
-    res <- viper(combined.mat all.networks)
+    res <- viper(combined.mat,getNets())
+    vals=tidied.df$sample[which(tidied.df$condition==condition)]
 
-    }
+    cond<-getViperForCondition(res,which(colnames(res)%in%vals))
+    print(cond)
+
+}
+
+getProteinsFromGenesCondition(tidied.df,condition,id.type)
