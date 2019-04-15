@@ -10,3 +10,6 @@ runPcsfWithParams(ppi, terminals, dummies, w = 2, b = 1, mu = 5e-04,
 \description{
 \code{runPcsfWithParams} Identifies drugs in a
 }
+\keyword{PCSF}
+\keyword{network}
+\keyword{terminals}

@@ -9,9 +9,6 @@ buildNetwork(drug.graph)
 \arguments{
 \item{drug.graph}{Tidied drug response}
 }
-\value{
-
-}
 \description{
 \code{buildNetwork} Identifies drugs in a
 }

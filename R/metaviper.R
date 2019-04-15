@@ -4,7 +4,6 @@
 #' @param condition set of columns
 #' @keywords
 #' @export
-#' @examples
 #' @import viper
 #' @import org.Hs.eg.db
 #' @return list
@@ -54,27 +53,28 @@ getGeneEntrezMapping<-function(genes){
 
     entrez_list <- getBM(filters ="hgnc_symbol",
                          attributes = c("hgnc_symbol", "entrezgene"),
-                         values =genes, mart = mart)%>%rename(hgnc_symbol='gene')
+                         values =genes, mart = mart)%>%rename(gene='hgnc_symbol')
     return(entrez_list)
 }
 
 
-#' @import dplyr reshape2
+#' @import dplyr reshape2 viper
 #' @export 
 getProteinsFromGenesCondition<-function(tidied.df,condition,idtype){
   require(dplyr)
   require(reshape2)
+  require(viper)
     if(tolower(idtype)=='entrez')
-        tidied.df<-rename(tidied.df,entrezgene='gene')
+        tidied.df<-rename(tidied.df,gene='entrezgene')
     else
         tidied.df<-tidied.df%>%left_join(getGeneEntrezMapping(unique(tidied.df$gene)),by='gene')
 
     combined.mat<-reshape2::acast(tidied.df,entrezgene~sample,value.var="counts",fun.aggregate=function(x) mean(x,na.rm=T))
 
-    res <- viper(combined.mat,getNets())
+    res <- viper::viper(combined.mat,getNets())
     vals=tidied.df$sample[which(tidied.df$condition==condition)]
 
     cond<-getViperForCondition(res,which(colnames(res)%in%vals))
-    write.table(data.frame(gene=names(cond),vals=unlist(cond)),file="",row.names=F,sep='\t')
+   return(data.frame(gene=names(cond),vals=unlist(cond)))
 
 }
