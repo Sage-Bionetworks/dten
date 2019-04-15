@@ -17,12 +17,12 @@ We have built another workflow that aligns and annotates `fastq` files and uploa
 
 #### Getting Proteins of interest
 DTEN assumes that files are in a tidied data frame with the following headers:
-|Header name| Description|
-|---|---|
-|gene|Name of gene, either `entrez` identifier or `hugo`|
-|sample|some sample identifier|
-|counts|quantification of counts|
-|conditions|Conditions under which that sample applies|
+| Header name | Description |
+| --- | --- |
+| gene| Name of gene, either `entrez` identifier or `hugo` |
+| sample | some sample identifier |
+| counts | quantification of counts |
+| conditions | Conditions under which that sample applies |
 
 #### Building networks and getting pathway enrichment
 Once we have the proteins we can add them to networks
