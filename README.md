@@ -17,6 +17,7 @@ We have built another workflow that aligns and annotates `fastq` files and uploa
 
 #### Getting Proteins of interest
 DTEN assumes that files are in a tidied data frame with the following headers:
+
 | Header name | Description |
 | --- | --- |
 | gene| Name of gene, either `entrez` identifier or `hugo` |
