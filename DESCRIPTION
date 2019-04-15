@@ -7,3 +7,4 @@ Depends: R (>= 3.1.0)
 License: MIT
 LazyData: true
 RoxygenNote: 6.1.1
+Imports: PCSF, dplyr, reshape2, org.Hs.eg.db, viper, biomaRt
