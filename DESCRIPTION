@@ -1,0 +1,9 @@
+Package: dten
+Title: Infers drugs of interest based on expression
+Version: 0.1
+Authors:
+Description:
+Depends: R (>= 3.1.0)
+License: MIT
+LazyData: true
+RoxygenNote: 6.1.1

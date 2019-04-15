@@ -1,0 +1,3 @@
+library(synapser)
+
+args=commandArgs()
