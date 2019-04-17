@@ -50,7 +50,7 @@ getGeneEntrezMapping<-function(genes){
   #
   library(biomaRt)
     mart <- useMart('ensembl',dataset='hsapiens_gene_ensembl')
-
+  
     entrez_list <- getBM(filters ="hgnc_symbol",
                          attributes = c("hgnc_symbol", "entrezgene"),
                          values =genes, mart = mart)%>%rename(gene='hgnc_symbol')

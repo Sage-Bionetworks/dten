@@ -1,7 +1,8 @@
 #!/usr/bin/env Rscript
 
-require(optparse)
-require(dten)
+suppressPackageStartupMessages(require(optparse))
+suppressPackageStartupMessages(require(dten))
+
 getArgs<-function(){
   
   option_list <- list(
@@ -23,7 +24,11 @@ main<-function(){
   else
     tab<-args$input
   
-  tidied.df<-read.csv(tab)
+  ext <- rev(unlist(strsplit(basename(tab),split='.',fixed=T)))[1]
+
+#  if(ext=='gz')
+#    tab<-gzfile(tab,'rt')
+  tidied.df<-read.table(tab,sep=',',header=T)
 
   req.names=c('counts','gene','sample','conditions')
   #check names
@@ -33,6 +38,7 @@ main<-function(){
   print('Requires file name, id-type (entrez or hugo), and condition of interest as input')
  # q('no')
   }
+  print(head(tidied.df))
   res<-dten::getProteinsFromGenesCondition(tidied.df,args$condition,args$idtype)
   write.table(res,file=args$output,sep='\t',quote=F,row.names=F)
 }
