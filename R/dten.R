@@ -18,3 +18,12 @@ getNetFeatures<-function(pcsf.network){
   
 }
 
+
+findDistinctDrugs<-function(){
+  
+  
+}
+
+findDistinctGenes<-function(){
+  
+}

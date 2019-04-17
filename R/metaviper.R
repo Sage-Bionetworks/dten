@@ -73,8 +73,9 @@ getProteinsFromGenesCondition<-function(tidied.df,condition,idtype){
 
     res <- viper::viper(combined.mat,getNets())
     vals=tidied.df$sample[which(tidied.df$condition==condition)]
-
+   print(length(vals))
     cond<-getViperForCondition(res,which(colnames(res)%in%vals))
+    print(cond)
    return(data.frame(gene=names(cond),vals=unlist(cond)))
 
 }
