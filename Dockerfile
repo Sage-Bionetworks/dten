@@ -17,7 +17,7 @@ RUN R CMD INSTALL .
 COPY bin/networksToSynapse.R /usr/local/bin/
 COPY bin/runMetaViper.R /usr/local/bin/
 COPY bin/runNetworkFromGenes.R /usr/local/bin/
-COPY bin/metaNetworkComparisons.R /usr/local/bin
+COPY bin/metaNetworkComparisons.R /usr/local/bin/
 
 RUN chmod a+x /usr/local/bin/runMetaViper.R
 RUN chmod a+x /usr/local/bin/runNetworkFromGenes.R
