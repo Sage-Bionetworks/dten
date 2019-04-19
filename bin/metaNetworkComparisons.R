@@ -25,7 +25,7 @@ main<-function(){
   all.nets<-lapply(unlist(strsplit(args$input,split=',')),readRDS)
   print(paste("Loaded",length(all.nets),'networks'))
   
-  summary<-dten::getNetworkSummaries()
+  summary<-dten::getNetSummaries(all.nets)
   
 }
 

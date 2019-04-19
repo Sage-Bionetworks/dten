@@ -2,23 +2,24 @@
 
 
 
-getNetFeatures<-function(pcsf.network){
-  require(igraph)
-  drug.res <- igraph::V(pcsf.network)$name[which(igraph::V(pcsf.network)$type=='Compound')]
-  steiner <- igraph::V(pcsf.network)$name[which(igraph::V(pcsf.network)$type=='Steiner')]
-  prize.res <- igraph::V(pcsf.network)$name[which(igraph::V(pcsf.network)$type=='Terminal')]
-  return(list(compounds=drug.res,steiner=steiner,terminals=prize.res))  
+
+findDistinctDrugs<-function(nets){
+  drugs<-lapply(nets,function(pcsf.res){
+    drug.res <- igraph::V(pcsf.res)$name[which(igraph::V(pcsf.res)$type=='Compound')]
+  })
   
+  unique.drugs<-lapply(1:length(drugs),function(x)
+    setdiff(drugs[[x]],unique(unlist(drugs[-x]))))
+  unique.drugs
 }
 
-
-findDistinctDrugs<-function(){
-  
-  
-}
-
-findDistinctGenes<-function(){
-  
+findDistinctGenes<-function(nets){
+  genes<-lapply(nets,function(pcsf.res){
+    gene.res <- igraph::V(pcsf.res)$name[which(igraph::V(pcsf.res)$type!='Compound')]
+  })
+  u.genes<-lapply(1:length(genes),function(x)
+    setdiff(genes[[x]],unique(genes[-x])))
+  u.genes
 }
 
 #'
@@ -33,5 +34,10 @@ getNetSummaries<-function(netlist){
   netnames<-lapply(netlist,function(x) x$Condition)
   nets<-lapply(netlist,function(x) x$subnet)
   enrichs<-lapply(netlist,function(x) x$enrichment)
+  
+  distinct.genes<-findDistinctGenes(nets)
+  distinct.drugs<-findDistinctDrugs(nets)
+  
+  
   
 }
