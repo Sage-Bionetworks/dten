@@ -25,6 +25,8 @@ in:
 
 out:
   proteins:
-    type: File
+    type: File[]
     outputBinding:
       glob: "*.tsv"
+  conditions:
+    type: stdout

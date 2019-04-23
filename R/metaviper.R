@@ -1,5 +1,3 @@
-
-
 #' \code{getViperForCondition} takes a matrix from viper and condition of interest aind computes differential reg
 #' @param condition set of columns
 #' @keywords
@@ -35,7 +33,7 @@ getViperForCondition <- function(v.res,condition,pvalthresh=0.05,useEntrez=TRUE,
 
 #' @import aracne.networks
 getNets<-function(){
-    require(aracne.networks)                        
+    require(aracne.networks)
                 #get aracne networks
     net.names <- data(package="aracne.networks")$results[, "Item"]
     all.networks <- lapply(net.names,function(x) get(x))
@@ -50,7 +48,7 @@ getGeneEntrezMapping<-function(genes){
   #
   library(biomaRt)
     mart <- useMart('ensembl',dataset='hsapiens_gene_ensembl')
-  
+
     entrez_list <- getBM(filters ="hgnc_symbol",
                          attributes = c("hgnc_symbol", "entrezgene"),
                          values =genes, mart = mart)%>%rename(gene='hgnc_symbol')
@@ -59,11 +57,11 @@ getGeneEntrezMapping<-function(genes){
 
 
 #' @import dplyr reshape2 viper
-#' @export 
+#' @export
 getProteinsFromGenesCondition<-function(tidied.df,condition,idtype){
-  require(dplyr)
-  require(reshape2)
-  require(viper)
+  suppressPackageStartupMessages(require(dplyr))
+  suppressPackageStartupMessages(require(reshape2))
+  suppressPackageStartupMessages(require(viper))
     if(tolower(idtype)=='entrez')
         tidied.df<-rename(tidied.df,gene='entrezgene')
     else
@@ -74,12 +72,12 @@ getProteinsFromGenesCondition<-function(tidied.df,condition,idtype){
     res <- viper::viper(combined.mat,getNets())
     vals=tidied.df$sample[which(tidied.df$condition==condition)]
   # print(length(vals))
-    
+
     cond<-getViperForCondition(res,which(colnames(res)%in%vals))
     navals<-which(is.na(names(cond)))
     if(length(navals)>0)
       cond=cond[-navals]
-      
+
    # print(cond)
    return(data.frame(gene=names(cond),vals=unlist(cond)))
 
