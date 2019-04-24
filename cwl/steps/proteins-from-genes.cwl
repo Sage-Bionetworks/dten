@@ -10,8 +10,6 @@ requirements:
     dockerPull: sgosline/dten
   - class: InlineJavascriptRequirement
 
-stdout: out.txt
-
 inputs:
   gene-data:
     type: File
