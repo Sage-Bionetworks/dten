@@ -8,20 +8,20 @@ baseCommand: ['Rscript','/usr/local/bin/runMetaViper.R']
 requirements:
   - class: DockerRequirement
     dockerPull: sgosline/dten
+  - class: InlineJavascriptRequirement
+
+stdout: out.txt
 
 inputs:
   gene-data:
     type: File
     inputBinding:
-      prefix: '--i'
+      prefix: '-i'
   id-type:
     type: string
     inputBinding:
-      prefix: '--d'
-  condition:
-    type: string
-    inputBinding:
-      prefix: '--c'
+      prefix: '-d'
+
 
 outputs:
   protein-lists:
@@ -31,8 +31,10 @@ outputs:
     outputBinding:
        glob: "*.tsv"
   conditions:
-       type: array
-       items: string
-     outputBinding: stdout
+    type: string[]
+    outputBinding: 
+      glob: out.txt
+      loadContents: true
+      outputEval: $(String(self[0].contents))
 
        
