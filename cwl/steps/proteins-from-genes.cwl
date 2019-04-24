@@ -25,16 +25,14 @@ inputs:
 
 outputs:
   protein-lists:
-    type: 
+    type:
        type: array
        items: File
     outputBinding:
        glob: "*.tsv"
   conditions:
     type: string[]
-    outputBinding: 
-      glob: out.txt
+    outputBinding:
+      glob: "*.txt"
       loadContents: true
       outputEval: $(String(self[0].contents))
-
-       

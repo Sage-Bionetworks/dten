@@ -40,16 +40,15 @@ main<-function(){
   }
   cond=args$condition
   if(is.null(cond))
-      lapply(unique(tidied.df$condition),function(cond){
-          res<-dten::getProteinsFromGenesCondition(tidied.df,cond,args$idtype)
-          write.table(res,file=paste(gsub(' ','',cond),args$output,sep=''),sep='\t',quote=F,row.names=F)
-          cat(cond)
-      })
-  else{
-      res<-dten::getProteinsFromGenesCondition(tidied.df,cond,args$idtype)
-      write.table(res,file=paste(gsub(' ','',cond),args$output,sep=''),sep='\t',quote=F,row.names=F)
-      cat(cond)
-      }
+      cond<-unique(tidied.df$conditions)
+
+  lapply(cond,function(co){
+          res<-dten::getProteinsFromGenesCondition(tidied.df,co,args$idtype)
+          write.table(res,file=paste(gsub(' ','',co),args$output,sep=''),sep='\t',quote=F,row.names=F)
+
+  })
+   write.table(cond,row.names=F,col.names=F,quote=F,file='conditions.txt')
+
 }
 
 main()
