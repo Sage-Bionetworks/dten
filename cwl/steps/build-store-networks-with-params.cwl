@@ -5,7 +5,7 @@ class: Workflow
 
 requirements:
   - class: ScatterFeatureRequirement
-
+  - class: SubworkflowFeatureRequirement
 inputs:
   beta:
     type: double
@@ -15,8 +15,13 @@ inputs:
     type: double
   protein-lists:
     type: File[]
-  conditions:
+  condition-list:
     type: string[]
+
+outputs:
+   network-file:
+     type: File[]
+     outputSource: run-networks/network-file
 
 steps:
   run-networks:
@@ -24,15 +29,10 @@ steps:
       beta: beta
       mu: mu
       w: w
-      protein-list:
-        protein-lists
-      condition:
-        conditions
-    scatter:
-      - protein-list
-      - condition
+      protein-list: protein-lists
+      condition: condition-list
+    scatter: [protein-list, condition]
     scatterMethod: dotproduct
     run: run-network-with-params.cwl
     out:
-      network:
-        type: File
+      [network-file]

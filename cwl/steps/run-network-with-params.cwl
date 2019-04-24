@@ -1,7 +1,7 @@
 label: run-network-with-params
 id: run-network-with-params
 cwlVersion: v1.0
-class: CommandLindTool
+class: CommandLineTool
 
 baseCommand: ['Rscript','/usr/local/bin/runNetworksFromGenes.R']
 
@@ -10,7 +10,7 @@ requirements:
   - class: DockerRequirement
     dockerPull: sgosline/dten
 
-in:
+inputs:
   mu:
     type: double
     inputBinding:
@@ -32,7 +32,8 @@ in:
     inputBinding:
       prefix: '-c'
 
-out:
+outputs:
   network-file:
+    type: File
     outputBinding:
       glob: "*.rds"

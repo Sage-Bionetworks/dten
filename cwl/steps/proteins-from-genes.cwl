@@ -3,13 +3,13 @@ id: proteins-from-genes
 cwlVersion: v1.0
 class: CommandLineTool
 
-baseCommmand: ['Rscript','/usr/local/bin/runMetaViper.R']
+baseCommand: ['Rscript','/usr/local/bin/runMetaViper.R']
 
 requirements:
   - class: DockerRequirement
     dockerPull: sgosline/dten
 
-in:
+inputs:
   gene-data:
     type: File
     inputBinding:
@@ -23,10 +23,16 @@ in:
     inputBinding:
       prefix: '--c'
 
-out:
-  proteins:
-    type: File[]
+outputs:
+  protein-lists:
+    type: 
+       type: array
+       items: File
     outputBinding:
-      glob: "*.tsv"
+       glob: "*.tsv"
   conditions:
-    type: stdout
+       type: array
+       items: string
+     outputBinding: stdout
+
+       

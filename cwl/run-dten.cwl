@@ -22,7 +22,9 @@ inputs:
     type: string
 
 outputs:
-  []
+  out:
+    type: File[]
+    outputSource: build-networks/network-file
 
 requirements:
   - class: ScatterFeatureRequirement
@@ -34,7 +36,7 @@ steps:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/synapse-client-cwl-tools/master/synapse-get-tool.cwl
     in:
       synapseid: input-file-id
-      synapse_config: synapse_config
+      synapse_config: synapse-config
     out: [filepath]
   get-prots:
     run: steps/proteins-from-genes.cwl
@@ -42,32 +44,21 @@ steps:
       gene-data: download-file/filepath
       id-type: gene-id-type
     out:
-      proteins:
-        type: File[]
-      conditions:
-        type: string[]
+      [proteins,conditions]
   build-networks:
-    scatter:
-      - beta
-      - mu
-      - w
-    scatterMethod: flat_crossprojuct
+    scatter: [beta, mu, w]
+
+    scatterMethod: flat_crossproduct
+    
     run: steps/build-store-networks-with-params.cwl
+    
     in:
-      beta:
-        beta-params
-      mu:
-        mu-params
-      w:
-        w-params
-      proteins-lists:
-        get-proteins/proteins
-      condition-list:
-        get-proteins/conditions
-      output-project-id:
-        output-project-id
-      output-folder-id:
-        output-folder-out
-   out:
-     network-files:
-       type: File[]
+      beta: beta-params
+      mu: mu-params
+      w: w-params
+      proteins-lists: get-prots/proteins
+      condition-list: get-prots/conditions
+      output-project-id: output-project-id
+      output-folder-id: output-parent-id
+    out:
+      [network-file]
