@@ -33,4 +33,4 @@ outputs:
     outputBinding:
       glob: "*.txt"
       loadContents: true
-      outputEval: $(String(self[0].contents))
+      outputEval: $(self[0].contents.split('\n'))
