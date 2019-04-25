@@ -11,9 +11,9 @@ baseCommand: ['synapse store']
 
 inputs:
   nodeTable:
-    type: File[]
+    type: File
   termTable:
-    type: File[]
+    type: File
   output-project-id:
     type: string
   synapse_config:
