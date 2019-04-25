@@ -36,8 +36,6 @@ steps:
       beta: beta
       mu: mu
       w: w
-      synapse_config: synapse_config
-      output-folder-id: output-folder-id
       protein-list: protein-lists
       condition: condition-list
     scatter: [protein-list, condition]
@@ -47,15 +45,14 @@ steps:
       [network-file]
   meta-analysis:
     in:
-      net-file-list: run-networks/network-file
-      output-project-id: output-project-id
+      input: run-networks/network-file
     run: steps/run-meta-analysis.cwl
     out:
-      [gene-table,path-table]
+      [nodefile,termfile]
   store-meta-analysis:
     in:
-      gene-tab: meta-analysis/gene-table
-      path-tab: meta-analysis/path-table
+      nodeTable: meta-analysis/nodefile
+      termTable: meta-analysis/termfile
       synapse_config: synapse_config
       output-project-id: output-project-id
     run: steps/store-tables.cwl

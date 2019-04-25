@@ -14,6 +14,10 @@ inputs:
     type: File[]
   termTable:
     type: File[]
+  output-project-id:
+    type: string
+  synapse_config:
+    type: File
 
 outputs:
   []

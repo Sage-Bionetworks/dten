@@ -15,13 +15,13 @@ inputs:
     type: File[]
     inputBinding:
       prefix: '-i'
-  output:
-    type: string
-    inputBinding:
-      prefix: '-o'
 
 outputs:
-  outfiles:
-    type: File[]
+  nodefile:
+    type: File
     outputBinding:
-      glob: "*tsv"
+      glob: "*nodeOutput.tsv"
+  termfile:
+    type: File
+    outputBinding:
+      glob: "*termOutput.tsv"

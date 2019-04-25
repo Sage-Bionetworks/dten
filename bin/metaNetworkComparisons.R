@@ -9,7 +9,7 @@ getArgs<-function(){
 
   option_list <- list(
     make_option(c("-i", "--input"), dest='input',help='Comma-delimited list of RDS files containing PCSF and enrichment output'),
-    make_option(c("-o", "--output"), default="testprots.tsv", dest='output',help = "Prefix to add to output files")
+    make_option(c("-o", "--output"), default="test", dest='output',help = "Prefix to add to output files")
   )
 
   args=parse_args(OptionParser(option_list = option_list))
