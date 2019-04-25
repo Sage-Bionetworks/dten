@@ -43,5 +43,21 @@ steps:
     scatter: [protein-list, condition]
     scatterMethod: dotproduct
     run: network-and-store.cwl
-    out: 
+    out:
       [network-file]
+  meta-analysis:
+    in:
+      net-file-list: run-networks/network-file
+      output-project-id: output-project-id
+    run: run-meta-analysis.cwl
+    out:
+      [gene-table,path-table]
+  store-meta-analysis:
+    in:
+      gene-tab: meta-analysis/gene-table
+      path-tab: meta-analysis/path-table
+      synapse_config: synapse_config
+      output-project-id: output-project-id
+    run: steps/store-tables.cwl
+    out:
+      []
