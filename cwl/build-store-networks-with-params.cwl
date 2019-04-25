@@ -37,11 +37,11 @@ steps:
       mu: mu
       w: w
       synapse_config: synapse_config
-      file_to_store: run-networks/network-file
-      parentid: output-folder-id
+      output-folder-id: output-folder-id
       protein-list: protein-lists
       condition: condition-list
     scatter: [protein-list, condition]
     scatterMethod: dotproduct
     run: network-and-store.cwl
-    out:
+    out: 
+      [network-file]

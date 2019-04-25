@@ -11,20 +11,18 @@ inputs:
   gene-id-type:
     type: string
   beta-params:
-    type: string[]
+    type: double[]
   mu-params:
-    type: string[]
+    type: double[]
   w-params:
-    type: string[]
+    type: double[]
   output-parent-id:
     type: string
   output-project-id:
     type: string
 
 outputs:
-  out:
-    type: File[]
-    outputSource: build-networks/network-file
+  out: []
 
 requirements:
   - class: ScatterFeatureRequirement
@@ -47,11 +45,8 @@ steps:
       [protein-lists,conditions]
   build-networks:
     scatter: [beta, mu, w]
-
     scatterMethod: flat_crossproduct
-    
-    run: steps/build-store-networks-with-params.cwl
-    
+    run: build-store-networks-with-params.cwl
     in:
       beta: beta-params
       mu: mu-params

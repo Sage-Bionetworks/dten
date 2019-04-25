@@ -15,8 +15,6 @@ inputs:
     type: File
   condition:
     type: string
-  output-project-id:
-    type: string
   output-folder-id:
     type: string
   synapse_config:
@@ -25,8 +23,7 @@ inputs:
 outputs:
   network-file:
     type: File
-    outputSource:
-      run-network/network-file
+    outputSource: run-network/network-file
 
 steps:
   run-network:
@@ -41,7 +38,7 @@ steps:
     run: steps/run-network-with-params.cwl
   store-network:
     in:
-      file_to_store: run-networks/network-file
+      file_to_store: run-network/network-file
       parentid: output-folder-id
       synapse_config: synapse_config
     run: https://raw.githubusercontent.com/Sage-Bionetworks/synapse-client-cwl-tools/master/synapse-store-tool.cwl
