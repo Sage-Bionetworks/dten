@@ -42,7 +42,7 @@ steps:
       condition: condition-list
     scatter: [protein-list, condition]
     scatterMethod: dotproduct
-    run: network-and-store.cwl
+    run: steps/run-network-with-params.cwl
     out:
       [network-file]
   meta-analysis:
