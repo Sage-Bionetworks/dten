@@ -3,7 +3,7 @@ id: run-network-with-params
 cwlVersion: v1.0
 class: CommandLineTool
 
-baseCommand: ['Rscript','/usr/local/bin/runNetworksFromGenes.R']
+baseCommand: ['Rscript','/usr/local/bin/runNetworkFromGenes.R']
 
 
 requirements:
