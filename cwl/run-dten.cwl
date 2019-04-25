@@ -44,7 +44,7 @@ steps:
       gene-data: download-file/filepath
       id-type: gene-id-type
     out:
-      [proteins,conditions]
+      [protein-lists,conditions]
   build-networks:
     scatter: [beta, mu, w]
 
@@ -56,9 +56,10 @@ steps:
       beta: beta-params
       mu: mu-params
       w: w-params
-      proteins-lists: get-prots/proteins
+      protein-lists: get-prots/protein-lists
       condition-list: get-prots/conditions
       output-project-id: output-project-id
       output-folder-id: output-parent-id
+      synapse_config: synapse-config
     out:
       [network-file]
