@@ -40,8 +40,8 @@ main<-function(){
   }
   cond=args$condition
   if(is.null(cond))
-      cond<-unique(tidied.df$conditions)
-
+      cond<-setdiff(unique(tidied.df$conditions),c(NA,""))
+  print(cond)
   lapply(cond,function(co){
           res<-dten::getProteinsFromGenesCondition(tidied.df,co,args$idtype)
           write.table(res,file=paste(gsub(' ','',co),args$output,sep=''),sep='\t',quote=F,row.names=F)
