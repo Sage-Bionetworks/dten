@@ -15,7 +15,13 @@ in:
     type: File[]
     inputBinding:
       prefix: '-i'
-
+  output:
+    type: string
+    intputBinding:
+      prefix: '-o'
 
 out:
-  []
+  outFiles:
+    type: File[]
+    outputBinding:
+      glob: "*tsv"
