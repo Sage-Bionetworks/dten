@@ -49,7 +49,7 @@ steps:
     in:
       net-file-list: run-networks/network-file
       output-project-id: output-project-id
-    run: run-meta-analysis.cwl
+    run: steps/run-meta-analysis.cwl
     out:
       [gene-table,path-table]
   store-meta-analysis:

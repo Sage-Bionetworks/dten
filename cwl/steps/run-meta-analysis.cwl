@@ -1,7 +1,7 @@
 label: run-network-with-params
 id: run-network-with-params
 cwlVersion: v1.0
-class: CommandLindTool
+class: CommandLineTool
 
 baseCommand: ['Rscript','/usr/local/bin/metaNetworkComparisons.R']
 
@@ -10,18 +10,18 @@ requirements:
   - class: DockerRequirement
     dockerPull: sgosline/dten
 
-in:
+inputs:
   input:
     type: File[]
     inputBinding:
       prefix: '-i'
   output:
     type: string
-    intputBinding:
+    inputBinding:
       prefix: '-o'
 
-out:
-  outFiles:
+outputs:
+  outfiles:
     type: File[]
     outputBinding:
       glob: "*tsv"

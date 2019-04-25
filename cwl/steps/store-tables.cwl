@@ -9,11 +9,11 @@ requirements:
 
 baseCommand: ['synapse store']
 
-in:
+inputs:
   nodeTable:
     type: File[]
   termTable:
     type: File[]
 
-out:
+outputs:
   []
