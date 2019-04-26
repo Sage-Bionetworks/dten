@@ -43,11 +43,12 @@ main<-function(){
       cond<-setdiff(unique(tidied.df$conditions),c(NA,""))
   print(cond)
   lapply(cond,function(co){
-          res<-dten::getProteinsFromGenesCondition(tidied.df,co,args$idtype)
-          write.table(res,file=paste(gsub(' ','',co),args$output,sep=''),sep='\t',quote=F,row.names=F)
+      res<-dten::getProteinsFromGenesCondition(tidied.df,co,args$idtype)
+      res$condition=rep(cond,nrow(res))
+      write.table(res,file=paste(gsub(' ','',co),args$output,sep=''),sep='\t',quote=F,row.names=F)
 
   })
-   cat(paste(cond,collapse='\n'),file='conditions.txt')
+#   cat(paste(cond,collapse='\n'),file='conditions.txt')
 
 }
 

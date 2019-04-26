@@ -16,8 +16,6 @@ inputs:
     type: double
   protein-lists:
     type: File[]
-  condition-list:
-    type: string[]
   output-project-id:
     type: string
   output-folder-id:
@@ -37,9 +35,8 @@ steps:
       mu: mu
       w: w
       protein-list: protein-lists
-      condition: condition-list
       synapse_config: synapse_config
-    scatter: [protein-list, condition]
+    scatter: [protein-list]
     scatterMethod: dotproduct
     run: steps/run-network-with-params.cwl
     out:

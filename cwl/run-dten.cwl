@@ -42,7 +42,7 @@ steps:
       gene-data: download-file/filepath
       id-type: gene-id-type
     out:
-      [protein-lists,conditions]
+      [protein-lists]
   build-networks:
     scatter: [beta, mu, w]
     scatterMethod: flat_crossproduct
@@ -52,7 +52,6 @@ steps:
       mu: mu-params
       w: w-params
       protein-lists: get-prots/protein-lists
-      condition-list: get-prots/conditions
       output-project-id: output-project-id
       output-folder-id: output-parent-id
       synapse_config: synapse-config

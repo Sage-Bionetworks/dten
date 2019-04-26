@@ -28,9 +28,3 @@ outputs:
        items: File
     outputBinding:
        glob: "*.tsv"
-  conditions:
-    type: string[]
-    outputBinding:
-      glob: "*.txt"
-      loadContents: true
-      outputEval: $(self[0].contents.split('\n'))

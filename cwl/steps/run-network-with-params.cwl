@@ -33,10 +33,6 @@ inputs:
     type: File
     inputBinding:
       prefix: '-i'
-  condition:
-    type: string
-    inputBinding:
-      prefix: '-c'
 
 outputs:
   network-file:
