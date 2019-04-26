@@ -3,14 +3,20 @@ id: run-network-with-params
 cwlVersion: v1.0
 class: CommandLineTool
 
-baseCommand: ['Rscript','/usr/local/bin/runNetworkFromGenes.R']
+baseCommand: ['Rscript','/Users/sgosline/Code/drug-target-expresion/networks/bin/runNetworkFromGenes.R']
 
 
 requirements:
   - class: DockerRequirement
     dockerPull: sgosline/dten
+  - class: InlineJavascriptRequirement
+  - class: InitialWorkDirRequirement
+    listing:
+      - entry: $(inputs.synapse_config)
 
 inputs:
+  synapse_config:
+    type: File
   mu:
     type: double
     inputBinding:

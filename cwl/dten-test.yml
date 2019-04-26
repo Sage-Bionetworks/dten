@@ -10,4 +10,14 @@ output-parent-id: syn18483806
 output-project-id: syn16941818
 gene-data:
   class: File
-  path: newTab.csv 
+  path: newTab.csv
+mu: 0.01
+w: 10
+beta: 3
+protein-list:
+  class: File
+  path: LowGradeGliomatestprots.tsv
+condition: Low Grade Glioma
+synapse_config:
+    class: File
+    path: /Users/sgosline/.synapseConfig
