@@ -38,6 +38,7 @@ steps:
       w: w
       protein-list: protein-lists
       condition: condition-list
+      synapse_config: synapse_config
     scatter: [protein-list, condition]
     scatterMethod: dotproduct
     run: steps/run-network-with-params.cwl
