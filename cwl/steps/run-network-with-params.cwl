@@ -3,7 +3,7 @@ id: run-network-with-params
 cwlVersion: v1.0
 class: CommandLineTool
 
-baseCommand: ['Rscript','/Users/sgosline/Code/drug-target-expresion/networks/bin/runNetworkFromGenes.R']
+baseCommand: ['Rscript','/usr/local/bin/runNetworkFromGenes.R']
 
 
 requirements:

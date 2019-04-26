@@ -20,4 +20,4 @@ protein-list:
 condition: Low Grade Glioma
 synapse_config:
     class: File
-    path: /Users/sgosline/.synapseConfig
+    path: /home/sgosline/.synapseConfig
