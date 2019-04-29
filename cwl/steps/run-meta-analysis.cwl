@@ -13,9 +13,9 @@ requirements:
 inputs:
   input:
     type: File[]
-    itemSeparator: ","
     inputBinding:
       prefix: '-i'
+      itemSeparator: ","
 
 outputs:
   nodefile:
