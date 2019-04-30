@@ -44,7 +44,7 @@ main<-function(){
   print(cond)
   lapply(cond,function(co){
       res<-dten::getProteinsFromGenesCondition(tidied.df,co,args$idtype)
-      res$condition=rep(cond,nrow(res))
+      res$condition=rep(co,nrow(res))
       write.table(res,file=paste(gsub(' ','',co),args$output,sep=''),sep='\t',quote=F,row.names=F)
 
   })
