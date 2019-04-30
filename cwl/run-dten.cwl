@@ -22,7 +22,14 @@ inputs:
     type: string
 
 outputs:
-  out: []
+  out:
+    type:
+      type: array
+      items:
+        type: array
+        items: File
+    outputSource: build-networks/network-file
+
 
 requirements:
   - class: ScatterFeatureRequirement
