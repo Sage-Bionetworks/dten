@@ -52,11 +52,11 @@ getNetSummaries<-function(netlist){
   ##what do i want to see?  
   require(dplyr)
   term.tab<-do.call(rbind,lapply(1:length(distinct.terms),function(x){
-    data.frame(Condition=netnames[[x]],
-               mu=params[[x]]$mu,
-               beta=params[[x]]$b,
-               w=params[[x]]$w,
-               dplyr::select(distinct.terms[[x]],Cluster,Term,Overlap,Adjusted.P.value,Genes,DrugsByBetweenness))
+    res<-dplyr::select(distinct.terms[[x]],Cluster,Term,Overlap,Adjusted.P.value,Genes,DrugsByBetweenness)
+    data.frame(Condition=rep(netnames[[x]], nrow(res)),
+               mu=rep(params[[x]]$mu, nrow(res)),
+               beta=rep(params[[x]]$b, nrow(res)),
+               w=rep(params[[x]]$w,nrow(res)), res)
   }))
   
   unique.nodes<-do.call(rbind,lapply(1:length(distinct.drugs),function(x){

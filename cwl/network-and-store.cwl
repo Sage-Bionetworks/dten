@@ -34,7 +34,7 @@ steps:
       protein-list: protein-list
       condition: condition
     out:
-      [network-file]
+      network-file
     run: steps/run-network-with-params.cwl
   store-network:
     in:
