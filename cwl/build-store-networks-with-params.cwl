@@ -24,7 +24,7 @@ inputs:
     type: File
 
 outputs:
-   network-file:
+   - id: network-file
      type: File[]
      outputSource: run-networks/network-file
 
