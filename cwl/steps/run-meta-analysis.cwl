@@ -9,13 +9,28 @@ baseCommand: ['Rscript','/usr/local/bin/metaNetworkComparisons.R']
 requirements:
   - class: DockerRequirement
     dockerPull: sgosline/dten
+  - class: InlineJavascriptRequirement
+  - class: InitialWorkDirRequirement
+    listing:
+      - entry: $(inputs.synapse_config)
+
 
 inputs:
+  synapse_config:
+    type: File
   input:
     type: File[]
     inputBinding:
       prefix: '-i'
       itemSeparator: ","
+  output:
+    type: string
+    inputBinding:
+      prefix: '-o'
+  project:
+    type: string
+    inputBinding:
+      prefix: '-p'
 
 outputs:
   nodefile:

@@ -3,9 +3,9 @@ synapse-config:
   class: File
   path: /home/sgosline/.synapseConfig
 gene-id-type: hugo
-beta-params: [2,3,4,5]
-mu-params: [0.01, 10e-3,10e-4,10e-5]
-w-params: [1,10,100,1000]
+beta-params: [2,3]
+mu-params: [0.01, 10e-3]
+w-params: [1,10]
 output-parent-id: syn18483806
 output-project-id: syn16941818
 gene-data:
@@ -21,3 +21,4 @@ condition: Low Grade Glioma
 synapse_config:
     class: File
     path: /home/sgosline/.synapseConfig
+name: Pan-NF Networks

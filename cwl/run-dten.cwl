@@ -20,6 +20,8 @@ inputs:
     type: string
   output-project-id:
     type: string
+  name:
+    type: string
 
 outputs:
   out:
@@ -62,5 +64,6 @@ steps:
       output-project-id: output-project-id
       output-folder-id: output-parent-id
       synapse_config: synapse-config
+      net-name: name
     out:
       [network-file]

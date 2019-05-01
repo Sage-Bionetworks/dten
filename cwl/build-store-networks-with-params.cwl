@@ -6,6 +6,7 @@ class: Workflow
 requirements:
   - class: ScatterFeatureRequirement
   - class: SubworkflowFeatureRequirement
+  - class: InlineJavascriptRequirement
 
 inputs:
   beta:
@@ -22,6 +23,8 @@ inputs:
     type: string
   synapse_config:
     type: File
+  net-name:
+    type: string
 
 outputs:
    - id: network-file
@@ -41,18 +44,22 @@ steps:
     run: steps/run-network-with-params.cwl
     out:
       [network-file]
+  make-name:
+    in:
+      beta: beta
+      mu: mu
+      w: w
+      netpre: net-name
+    run:
+      steps/make-net-name.cwl
+    out:
+      [net-name]
   meta-analysis:
     in:
       input: run-networks/network-file
+      project: output-project-id
+      synapse_config: synapse_config
+      output: make-name/net-name
     run: steps/run-meta-analysis.cwl
     out:
       [nodefile,termfile]
-  store-meta-analysis:
-    in:
-      nodeTable: meta-analysis/nodefile
-      termTable: meta-analysis/termfile
-      synapse_config: synapse_config
-      output-project-id: output-project-id
-    run: steps/store-tables.cwl
-    out:
-      []

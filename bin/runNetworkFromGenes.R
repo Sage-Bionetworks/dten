@@ -26,13 +26,14 @@ main<-function(){
   condition<-tab$condition[1]##assume condition is written in every file
   dummies<-dten::getDrugs(dg)
 
-  pcsf.res<-dten::runPcsfWithParams(ppi,prots, dummies, w=2, b=1, mu=5e-04,doRand=TRUE)
+  pcsf.res<-dten::runPcsfWithParams(ppi,prots, dummies, w=args$w, b=args$beta, mu=args$mu,doRand=TRUE)
   pcsf.res <-dten::renameDrugIds(pcsf.res,dummies)
   enrich<-PCSF::enrichment_analysis(pcsf.res)
 
   res.obj<-list(network=enrich$subnet,enrichment=enrich$enrichment,params=list(w=args$w,b=args$b,args$mu),condition=condition)
   #dump to R
-   saveRDS(res.obj,file=args$output)
+  saveRDS(res.obj,file=args$output)
+                                        #writenetname
 }
 
 main()
