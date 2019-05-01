@@ -21,4 +21,4 @@ condition: Low Grade Glioma
 synapse_config:
     class: File
     path: /home/sgosline/.synapseConfig
-netpre: Pan-NF Networks
+name: Pan-NF Networks
