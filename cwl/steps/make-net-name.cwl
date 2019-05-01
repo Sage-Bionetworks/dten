@@ -1,7 +1,7 @@
 label: make-net-name
 id: make-net-name
 cwlVersion: v1.0
-class: CommandLineTool
+class: ExpressionTool
 
 requirements:
   InlineJavascriptRequirement: {}
@@ -15,12 +15,13 @@ inputs:
     type: double
   netpre:
     type: string
-
 outputs:
   net-name:
     type: string
-    outputBinding:
-      outputEval: |
-        ${
-        inputs.netpre+'beta'+inputs.beta +'mu'+inputs.mu+'w'+inputs.w;
-        }
+
+expression: |
+    ${
+      var ns = inputs.netpre.replace(/\s/g, '')
+      var net = ns+"_beta"+inputs.beta +"_mu"+inputs.mu+"_w"+inputs.w;
+      return { "net-name": net };
+     }
