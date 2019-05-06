@@ -28,9 +28,11 @@ main<-function(){
 
   pcsf.res<-dten::runPcsfWithParams(ppi,prots, dummies, w=args$w, b=args$beta, mu=args$mu,doRand=TRUE)
   pcsf.res <-dten::renameDrugIds(pcsf.res,dummies)
-  enrich<-PCSF::enrichment_analysis(pcsf.res)
 
-  res.obj<-list(network=enrich$subnet,enrichment=enrich$enrichment,params=list(w=args$w,b=args$b,args$mu),condition=condition)
+  enrich.res=data.frame()
+  try(enrich.res<-PCSF::enrichment_analysis(pcsf.res)$enrichment)
+
+  res.obj<-list(network=enrich$subnet,enrichment=enrich.res,params=list(w=args$w,b=args$b,args$mu),condition=condition)
   #dump to R
   saveRDS(res.obj,file=args$output)
                                         #writenetname
