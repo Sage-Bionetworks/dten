@@ -7,6 +7,7 @@ beta-params: [2,3]
 mu-params: [0.01, 10e-3]
 w-params: [1,10]
 output-parent-id: syn18483806
+output-folder-id: syn18483806
 output-project-id: syn16941818
 gene-data:
   class: File
@@ -14,11 +15,21 @@ gene-data:
 mu: 0.01
 w: 10
 beta: 3
-protein-list:
-  class: File
-  path: LowGradeGliomatestprots.tsv
-condition: Low Grade Glioma
+protein-lists:
+  - class: File
+    path: LowGradeGliomatestprots.tsv
+  - class: File
+    path: HighGradeGliomatestprots.tsv
+  - class: File
+    path: CutaneousNeurofibromatestprots.tsv
+  - class: File
+    path: PlexiformNeurofibromatestprots.tsv
+  - class: File
+    path: MalignantPeripheralNerveSheathTumortestprots.tsv
+  - class: File
+    path: Neurofibromatestprots.tsv
 synapse_config:
     class: File
     path: /home/sgosline/.synapseConfig
-name: Pan-NF Networks
+net-name: Pan-NF Networks
+id-type: hugo
