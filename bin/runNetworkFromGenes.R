@@ -20,6 +20,7 @@ getArgs<-function(){
 
 main<-function(){
   args<-getArgs()
+  print(paste('Mapping',args$input,'to network in',args$output))
   dg<-dten::loadDrugGraph()
   ppi<-dten::buildNetwork(dg)
   tab<-read.table(args$input,sep='\t',header=T)
