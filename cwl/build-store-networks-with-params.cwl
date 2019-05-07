@@ -54,12 +54,12 @@ steps:
       steps/make-net-name.cwl
     out:
       [net-name]
-  #meta-analysis:
-  #  in:
-  #    input: run-networks/network-file
-  #    project: output-project-id
-  #    synapse_config: synapse_config
-  #    output: make-name/net-name
-  #  run: steps/run-meta-analysis.cwl
-  #  out:
-  #    [nodefile,termfile]
+  meta-analysis:
+    in:
+      input: run-networks/network-file
+      project: output-project-id
+      synapse_config: synapse_config
+      output: make-name/net-name
+    run: steps/run-meta-analysis.cwl
+    out:
+      [nodefile,termfile]

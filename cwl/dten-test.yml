@@ -15,19 +15,19 @@ gene-data:
 mu: 0.01
 w: 10
 beta: 3
-protein-lists:
-  - class: File
-    path: LowGradeGliomatestprots.tsv
-  - class: File
-    path: HighGradeGliomatestprots.tsv
-  - class: File
-    path: CutaneousNeurofibromatestprots.tsv
-  - class: File
-    path: PlexiformNeurofibromatestprots.tsv
-  - class: File
-    path: MalignantPeripheralNerveSheathTumortestprots.tsv
-  - class: File
-    path: Neurofibromatestprots.tsv
+protein-list:
+   class: File
+   path: LowGradeGliomatestprots.tsv
+#  - class: File
+#    path: HighGradeGliomatestprots.tsv
+#  - class: File
+#    path: CutaneousNeurofibromatestprots.tsv
+#  - class: File
+#    path: PlexiformNeurofibromatestprots.tsv
+#  - class: File
+#    path: MalignantPeripheralNerveSheathTumortestprots.tsv
+#  - class: File
+#    path: Neurofibromatestprots.tsv
 synapse_config:
     class: File
     path: /home/sgosline/.synapseConfig
