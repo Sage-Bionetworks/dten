@@ -30,11 +30,11 @@ main<-function(){
 
     if(!is.null(args$project)){
       require(synapser)
-      synLogin()
-      node.tab<-synBuildtable(values=summary$nodes,parent=args$project,name=paste(args$output,'DTEN Node results'))
-       term.tab<-synBuildtable(values=summary$terms,parent=args$project,name=paste(args$output,'DTEN Term results'))
-       synStore(node.tab)
-       synStore(term.tab)
+      synapser::synLogin()
+      node.tab<-synapser::synBuildTable(values=summary$nodes,parent=args$project,name=paste(args$output,'DTEN Node results'))
+       term.tab<-synapser::synBuildTable(values=summary$terms,parent=args$project,name=paste(args$output,'DTEN Term results'))
+       synapser::synStore(node.tab)
+       synapser::synStore(term.tab)
     }
 }
 

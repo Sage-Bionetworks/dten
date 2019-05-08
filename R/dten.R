@@ -28,9 +28,9 @@ findDistinctTerms<-function(enrichs){
   dist.inds<-lapply(1:length(terms.only),function(x)
     setdiff(terms.only[[x]],unlist(terms.only[-x])))
 
-  new.terms<-do.call(rbind,lapply(1:length(enrichs),function(x)
-      enrichs[[x]][which(enrichs[[x]]$Term%in%dist.inds[[x]]),]))
-  print(paste("Found",nrow(new.terms),'distinct terms'))
+  new.terms<-lapply(1:length(enrichs),function(x)
+      enrichs[[x]][which(enrichs[[x]]$Term%in%dist.inds[[x]]),])
+  print(paste("Found",length(new.terms),'distinct terms'))
   return(new.terms)
 }
 
@@ -55,6 +55,7 @@ getNetSummaries<-function(netlist){
   ##what do i want to see?
   require(dplyr)
   term.tab<-do.call(rbind,lapply(1:length(netlist),function(x){
+    print(x)
     res<-dplyr::select(distinct.terms[[x]],Cluster,Term,Overlap,Adjusted.P.value,Genes,DrugsByBetweenness)
     data.frame(Condition=rep(netnames[[x]], nrow(res)),
                mu=rep(params[[x]]$mu, nrow(res)),
@@ -73,7 +74,9 @@ getNetSummaries<-function(netlist){
                      beta=params[[x]]$b,
                      w=params[[x]]$w,
                      Node=distinct.genes[[x]],nodeType='Gene'))}))
-  list(terms=unique.terms,nodes=unique.nodes)
+  
+  return(list(terms=term.tab,nodes=unique.nodes))
+  
 
 
 }
