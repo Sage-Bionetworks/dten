@@ -18,24 +18,68 @@ getArgs<-function(){
   return(args)
 }
 
+getTableInstance<-function(parentId,name){
+  require(synapser)
+  synapser::synLogin()
+  clist=as.list(synGetChildren(parentId))
+  tab.names=unlist(lapply(clist,function(x){
+          if(x$type=='org.sagebionetworks.repo.model.table.TableEntity'){
+          return(x$name)}}))
+  tab.ids=unlist(lapply(clist,function(x){
+    if(x$type=='org.sagebionetworks.repo.model.table.TableEntity'){
+      return(x$id)}}))
+  if(name%in%tab.names)
+    return(tab.ids[match(name,tab.names)])
+  else
+    return(NULL)
+  }
+
+storeTab <-function(values,tabname,synid){
+  library(synapser)
+    tabid=getTableInstance(synid,tabname)
+    print(tabid)
+    values<-as.data.frame(values)
+    if(is.null(tabid)){
+      #print(dim(values))
+        tab<-synapser::synBuildTable(name=tabname,parent=synid,values=values)
+    }else{
+        tab <-synapser::Table(synGet(tabid),values)
+    }
+    synapser::synStore(tab)
+    
+    
+    }
+
+writeTab<-function(name,dat){
+  if(file.exists(name)){
+    tab<-read.table(name,sep='\t')
+    tab<-rbind(tab,dat)
+  }else{
+    tab<-dat
+  }
+  write.table(tab,file=name,sep='\t')
+
+}
+
 main<-function(){
 
-  args<-getArgs()
+    args<-getArgs()
+
   all.nets<-lapply(unlist(strsplit(args$input,split=',')),readRDS)
   print(paste("Loaded",length(all.nets),'networks'))
 
   summary<-dten::getNetSummaries(all.nets)
-    write.table(summary$nodes,file=paste(args$output,'nodeOutput.tsv',sep=''),sep='\t')
-    write.table(summary$terms,file=paste(args$output,'termOutput.tsv',sep=''),sep='\t')
+  nfile=paste(gsub(" ","",args$output),'nodeOutput.tsv',sep='')
+  tfile=paste(gsub(" ","",args$output),'termOutput.tsv',sep='')
+  writeTab(nfile,summary$nodes)
+  writeTab(tfile,summary$terms)
 
-    if(!is.null(args$project)){
-      require(synapser)
-      synapser::synLogin()
-      node.tab<-synapser::synBuildTable(values=summary$nodes,parent=args$project,name=paste(args$output,'DTEN Node results'))
-       term.tab<-synapser::synBuildTable(values=summary$terms,parent=args$project,name=paste(args$output,'DTEN Term results'))
-       synapser::synStore(node.tab)
-       synapser::synStore(term.tab)
-    }
+  if(!is.null(args$project)){
+    n.tabname=paste(args$output,'DTEN Node results')
+    t.tabname=paste(args$output,'DTEN Term results')
+    storeTab(values=summary$nodes,tabname=n.tabname,synid=args$project)
+    storeTab(values=summary$terms,tabname=t.tabname,synid=args$project)
+  }
 }
 
 main()

@@ -9,7 +9,7 @@ findDistinctDrugs<-function(nets){
 
   unique.drugs<-lapply(1:length(drugs),function(x)
       setdiff(drugs[[x]],unique(unlist(drugs[-x]))))
-  print(paste('found',length(unique.drugs),'unique compounds'))
+#  print(paste('found',length(unique.drugs),'unique compounds'))
   unique.drugs
 }
 
@@ -19,7 +19,7 @@ findDistinctGenes<-function(nets){
   })
   u.genes<-lapply(1:length(genes),function(x)
       setdiff(genes[[x]],unique(genes[-x])))
-  print(paste('Found',length(u.genes),'distinct genes'))
+#  print(paste('Found',length(u.genes),'distinct genes'))
   u.genes
 }
 
@@ -30,7 +30,7 @@ findDistinctTerms<-function(enrichs){
 
   new.terms<-lapply(1:length(enrichs),function(x)
       enrichs[[x]][which(enrichs[[x]]$Term%in%dist.inds[[x]]),])
-  print(paste("Found",length(new.terms),'distinct terms'))
+#  print(paste("Found",length(new.terms),'distinct terms'))
   return(new.terms)
 }
 
@@ -55,7 +55,12 @@ getNetSummaries<-function(netlist){
   ##what do i want to see?
   require(dplyr)
   term.tab<-do.call(rbind,lapply(1:length(netlist),function(x){
-    print(x)
+      print(x)
+    print(dim(distinct.terms[[x]]))
+      if(is.null(dim(distinct.terms[[x]]))){
+          return(data.frame(Condition=c(),mu=c(),beta=c(),w=c(),Cluster=c(),Term=c(),Overlap=c(),Adjusted.P.Value=c(),Genes=c(),DrugsByBetweenness=c()))}
+    
+      params[[x]]$mu<-params[[x]][[3]]
     res<-dplyr::select(distinct.terms[[x]],Cluster,Term,Overlap,Adjusted.P.value,Genes,DrugsByBetweenness)
     data.frame(Condition=rep(netnames[[x]], nrow(res)),
                mu=rep(params[[x]]$mu, nrow(res)),
@@ -64,6 +69,7 @@ getNetSummaries<-function(netlist){
   }))
 
   unique.nodes<-do.call(rbind,lapply(1:length(netlist),function(x){
+          params[[x]]$mu<-params[[x]][[3]]
     rbind(data.frame(Condition=netnames[[x]],
                      mu=params[[x]]$mu,
                      beta=params[[x]]$b,
@@ -74,9 +80,9 @@ getNetSummaries<-function(netlist){
                      beta=params[[x]]$b,
                      w=params[[x]]$w,
                      Node=distinct.genes[[x]],nodeType='Gene'))}))
-  
+
   return(list(terms=term.tab,nodes=unique.nodes))
-  
+
 
 
 }

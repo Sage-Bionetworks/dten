@@ -44,22 +44,22 @@ steps:
     run: steps/run-network-with-params.cwl
     out:
       [network-file]
-  make-name:
-    in:
-      beta: beta
-      mu: mu
-      w: w
-      netpre: net-name
-    run:
-      steps/make-net-name.cwl
-    out:
-      [net-name]
+ # make-name:
+ #   in:
+ #     beta: beta
+ #     mu: mu
+ #     w: w
+ #     netpre: net-name
+ #   run:
+ #     steps/make-net-name.cwl
+ #   out:
+ #     [net-name]
   meta-analysis:
     in:
       input: run-networks/network-file
       project: output-project-id
       synapse_config: synapse_config
-      output: make-name/net-name
+      output: net-name
     run: steps/run-meta-analysis.cwl
     out:
       [nodefile,termfile]
