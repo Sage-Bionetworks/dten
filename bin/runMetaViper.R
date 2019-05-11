@@ -2,6 +2,7 @@
 
 suppressPackageStartupMessages(require(optparse))
 suppressPackageStartupMessages(require(dten))
+require(methods)
 
 getArgs<-function(){
 

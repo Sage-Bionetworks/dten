@@ -4,6 +4,7 @@
 ##run meta-network comparisons
 suppressPackageStartupMessages(require(optparse))
 suppressPackageStartupMessages(require(dten))
+require(methods)
 
 getArgs<-function(){
 
@@ -46,8 +47,8 @@ storeTab <-function(values,tabname,synid){
         tab <-synapser::Table(synGet(tabid),values)
     }
     synapser::synStore(tab)
-    
-    
+
+
     }
 
 writeTab<-function(name,dat){
