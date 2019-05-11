@@ -60,7 +60,7 @@ getNetSummaries<-function(netlist){
       if(is.null(dim(distinct.terms[[x]]))){
           return(data.frame(Condition=c(),mu=c(),beta=c(),w=c(),Cluster=c(),Term=c(),Overlap=c(),Adjusted.P.Value=c(),Genes=c(),DrugsByBetweenness=c()))}
     
- #     params[[x]]$mu<-params[[x]][[3]]
+      params[[x]]$mu<-params[[x]][[3]]
     res<-dplyr::select(distinct.terms[[x]],Cluster,Term,Overlap,Adjusted.P.value,Genes,DrugsByBetweenness)
     data.frame(Condition=rep(netnames[[x]], nrow(res)),
                mu=rep(params[[x]]$mu, nrow(res)),
@@ -69,7 +69,7 @@ getNetSummaries<-function(netlist){
   }))
 
   unique.nodes<-do.call(rbind,lapply(1:length(netlist),function(x){
-#          params[[x]]$mu<-params[[x]][[3]]
+          params[[x]]$mu<-params[[x]][[3]]
     rbind(data.frame(Condition=netnames[[x]],
                      mu=params[[x]]$mu,
                      beta=params[[x]]$b,
