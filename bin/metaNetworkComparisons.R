@@ -44,7 +44,7 @@ storeTab <-function(values,tabname,synid){
       #print(dim(values))
         tab<-synapser::synBuildTable(name=tabname,parent=synid,values=values)
     }else{
-        tab <-synapser::Table(synGet(tabid),values)
+        tab <-synapser::Table(tabid,values)
     }
     synapser::synStore(tab)
 
