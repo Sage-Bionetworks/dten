@@ -38,8 +38,8 @@ getTableInstance<-function(parentId,name){
 
 buildDtenTable<-function(tabname,parent,values){
     col=lapply(names(values),function(x){
-        if(is.numeric(values[[x]]))
-            synapser::Column(name=x,columnType="INTEGER")
+        if(is.numeric(values[[x]])||x=='Adjusted.P.Value')
+            synapser::Column(name=x,columnType="DOUBLE")
         else if(x%in%c("Genes","DrugsByBetweenness"))
             synapser::Column(name=x,columnType='LARGETEXT')
         else
