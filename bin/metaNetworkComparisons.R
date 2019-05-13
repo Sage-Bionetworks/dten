@@ -35,14 +35,29 @@ getTableInstance<-function(parentId,name){
     return(NULL)
   }
 
+
+buildDtenTable<-function(tabname,parent,values){
+    col=lapply(names(values),function(x){
+        if(is.numeric(values[[x]]))
+            synapser::Column(name=x,columnType="INTEGER")
+        else if(x%in%c("Genes","DrugsByBetweenness"))
+            synapser::Column(name=x,columnType='LARGETEXT')
+        else
+            synapser::Column(name=x,columnType='STRING',maximumSize=256)
+    })
+    return(synapser::Table(synapser::Schema(name=tabname,parent=parent,columns=col),values))
+
+    }
+
 storeTab <-function(values,tabname,synid){
-  library(synapser)
+    library(synapser)
+    synLogin()
     tabid=getTableInstance(synid,tabname)
     print(tabid)
     values<-as.data.frame(values)
     if(is.null(tabid)){
-      #print(dim(values))
-        tab<-synapser::synBuildTable(name=tabname,parent=synid,values=values)
+                                        #print(dim(values))
+        tab<-buildDtenTable(tabname=tabname,parent=synid,values=values)
     }else{
         tab <-synapser::Table(tabid,values)
     }
