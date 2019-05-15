@@ -7,20 +7,33 @@ findDistinctDrugs<-function(nets){
     drug.res <- igraph::V(pcsf.res)$name[which(igraph::V(pcsf.res)$type=='Compound')]
   })
 
-  unique.drugs<-lapply(1:length(drugs),function(x)
-      setdiff(drugs[[x]],unique(unlist(drugs[-x]))))
+  unique.drugs<-lapply(1:length(drugs),function(x){
+     d<- setdiff(drugs[[x]],unique(unlist(drugs[-x])))
+     weights=igraph::V(nets[[x]])$prize[match(d,igraph::V(nets[[x]])$name)]
+     names(weights)<-d
+     weights
+    })
+#  print(unique.drugs)
 #  print(paste('found',length(unique.drugs),'unique compounds'))
-  unique.drugs
+#  unique.drugs
 }
 
 findDistinctGenes<-function(nets){
   genes<-lapply(nets,function(pcsf.res){
     gene.res <- igraph::V(pcsf.res)$name[which(igraph::V(pcsf.res)$type!='Compound')]
   })
-  u.genes<-lapply(1:length(genes),function(x)
-      setdiff(genes[[x]],unique(genes[-x])))
+  
+  u.genes<-lapply(1:length(genes),function(x){
+      g=setdiff(genes[[x]],unique(genes[-x]))
+    weights=igraph::V(nets[[x]])$prize[match(g,igraph::V(nets[[x]])$name)]
+    names(weights)<-g
+    weights
+  }
+    )
 #  print(paste('Found',length(u.genes),'distinct genes'))
+ print(u.genes)
   u.genes
+ 
 }
 
 findDistinctTerms<-function(enrichs){
@@ -31,7 +44,8 @@ findDistinctTerms<-function(enrichs){
   new.terms<-lapply(1:length(enrichs),function(x)
       enrichs[[x]][which(enrichs[[x]]$Term%in%dist.inds[[x]]),])
 #  print(paste("Found",length(new.terms),'distinct terms'))
-  return(new.terms)
+
+    return(new.terms)
 }
 
 
@@ -60,7 +74,7 @@ getNetSummaries<-function(netlist){
       if(is.null(dim(distinct.terms[[x]]))||nrow(distinct.terms[[x]])==0){
           return(NULL)
       }
-      #params[[x]]$mu<-params[[x]][[3]]
+      params[[x]]$mu<-params[[x]][[3]]
     res<-dplyr::select(distinct.terms[[x]],Cluster,Term,Overlap,Adjusted.P.value,Genes,DrugsByBetweenness)
     data.frame(Condition=rep(netnames[[x]], nrow(res)),
                mu=rep(params[[x]]$mu, nrow(res)),
@@ -69,17 +83,23 @@ getNetSummaries<-function(netlist){
   }))
 
   unique.nodes<-do.call(rbind,lapply(1:length(netlist),function(x){
-       #   params[[x]]$mu<-params[[x]][[3]]
-    rbind(data.frame(Condition=netnames[[x]],
-                     mu=params[[x]]$mu,
-                     beta=params[[x]]$b,
-                     w=params[[x]]$w,
-                     Node=distinct.drugs[[x]],nodeType='Compound'),
-          data.frame(Condition=netnames[[x]],
-                     mu=params[[x]]$mu,
-                     beta=params[[x]]$b,
-                     w=params[[x]]$w,
-                     Node=distinct.genes[[x]],nodeType='Gene'))}))
+          params[[x]]$mu<-params[[x]][[3]]
+    df1=data.frame(Condition=netnames[[x]],
+      mu=params[[x]]$mu,
+      beta=params[[x]]$b,
+      w=params[[x]]$w,
+      Node=names(distinct.drugs[[x]]),
+      NodeWeight=distinct.drugs[[x]],
+      nodeType='Compound')
+    df2= data.frame(Condition=netnames[[x]],
+      mu=params[[x]]$mu,
+      beta=params[[x]]$b,
+      w=params[[x]]$w,
+      Node=names(distinct.genes[[x]]),
+      NodeWeight=distinct.genes[[x]],
+      nodeType='Gene')
+       rbind(df1,df2)
+    }))
 
   return(list(terms=term.tab,nodes=unique.nodes))
 
