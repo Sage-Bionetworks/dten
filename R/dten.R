@@ -22,18 +22,19 @@ findDistinctGenes<-function(nets){
   genes<-lapply(nets,function(pcsf.res){
     gene.res <- igraph::V(pcsf.res)$name[which(igraph::V(pcsf.res)$type!='Compound')]
   })
-  
+
   u.genes<-lapply(1:length(genes),function(x){
-      g=setdiff(genes[[x]],unique(genes[-x]))
+      g=setdiff(genes[[x]],unique(unlist(genes[-x])))
+      print(paste(length(g),'unique genes out of',length(genes[[x]])))
     weights=igraph::V(nets[[x]])$prize[match(g,igraph::V(nets[[x]])$name)]
     names(weights)<-g
     weights
   }
     )
 #  print(paste('Found',length(u.genes),'distinct genes'))
- print(u.genes)
+# print(u.genes)
   u.genes
- 
+
 }
 
 findDistinctTerms<-function(enrichs){
