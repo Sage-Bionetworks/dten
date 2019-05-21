@@ -63,7 +63,7 @@ getProteinsFromGenesCondition<-function(tidied.df,condition,idtype){
   suppressPackageStartupMessages(require(reshape2))
   suppressPackageStartupMessages(require(viper))
     if(tolower(idtype)=='entrez')
-        tidied.df<-rename(tidied.df,gene='entrezgene')
+        tidied.df<-rename(tidied.df,entrezgene='gene')
     else
         tidied.df<-tidied.df%>%left_join(getGeneEntrezMapping(unique(tidied.df$gene)),by='gene')
 
