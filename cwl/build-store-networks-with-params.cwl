@@ -58,6 +58,7 @@ steps:
     in:
       input: run-networks/network-file
       project: output-project-id
+      folder: output-folder-id
       synapse_config: synapse_config
       output: net-name
     run: steps/run-meta-analysis.cwl

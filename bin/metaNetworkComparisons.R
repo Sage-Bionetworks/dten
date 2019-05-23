@@ -11,7 +11,8 @@ getArgs<-function(){
   option_list <- list(
     make_option(c("-i", "--input"), dest='input',help='Comma-delimited list of RDS files containing PCSF and enrichment output'),
     make_option(c("-o", "--output"), default="test", dest='output',help = "Prefix to add to output files"),
-    make_option(c('-p',"--project"),dest='project',default=NULL,help='Synapse id of project')
+    make_option(c('-p',"--project"),dest='project',default=NULL,help='Synapse id of project'),
+    make_option(c('-f',"--folder"),dest='folder',default=NULL,help='Synapse id of folder to store network')
   )
 
   args=parse_args(OptionParser(option_list = option_list))
@@ -42,6 +43,8 @@ buildDtenTable<-function(tabname,parent,values){
             synapser::Column(name=x,columnType="DOUBLE")
         else if(x%in%c("Genes","DrugsByBetweenness"))
             synapser::Column(name=x,columnType='LARGETEXT')
+        else if(x%in%c("network"))
+            synapser::Column(name=x,columnType='ENTITYID')
         else
             synapser::Column(name=x,columnType='STRING',maximumSize=256)
     })
@@ -77,6 +80,19 @@ writeTab<-function(name,dat){
 
 }
 
+storeNets<-function(nets,folderid){
+  library(synapser)
+  synLogin()
+  ids<-lapply(nets,function(n){
+      fname=paste(n$condition,'mu',n$params$mu,'beta',n$params$b,'w',n$params$w,'networks.rds',sep='_')
+      saveRDS(n,file=fname)
+      res=synStore(File(fname,parentId=folderid))
+      res$properties$id
+  })
+  names(ids)<-lapply(nets,function(x) x$condition)
+  ids
+ }
+
 main<-function(){
 
     args<-getArgs()
@@ -84,7 +100,10 @@ main<-function(){
   all.nets<-lapply(unlist(strsplit(args$input,split=',')),readRDS)
   print(paste("Loaded",length(all.nets),'networks'))
 
-  summary<-dten::getNetSummaries(all.nets)
+     synids<-storeNets(all.nets,args$folder)
+    summary<-dten::getNetSummaries(all.nets,synids)
+
+
   nfile=paste(gsub(" ","",args$output),'nodeOutput.tsv',sep='')
   tfile=paste(gsub(" ","",args$output),'termOutput.tsv',sep='')
   writeTab(nfile,summary$nodes)

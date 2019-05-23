@@ -28,5 +28,5 @@ protein-lists:
     path: MalignantPeripheralNerveSheathTumortestprots.tsv
   - class: File
     path: Neurofibromatestprots.tsv
-name: Pan-NF Networks
+name: Pan-NF Networks Test
 id-type: hugo

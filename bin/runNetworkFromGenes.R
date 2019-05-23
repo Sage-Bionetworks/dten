@@ -42,8 +42,9 @@ main<-function(){
 
 
   res.obj<-list(network=net,enrichment=enrich.res,params=list(w=args$w,b=args$b,mu=args$mu),condition=condition)
-  #dump to R
-  saveRDS(res.obj,file=args$output)
+                                        #dump to R
+#  if(!is.null(args$output))
+      saveRDS(res.obj,file=args$output)
                                         #writenetname
 }
 

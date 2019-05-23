@@ -31,6 +31,10 @@ inputs:
     type: string
     inputBinding:
       prefix: '-p'
+  folder:
+    type: string
+    inputBinding:
+      prefix: '-f'
 
 outputs:
   nodefile:

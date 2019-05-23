@@ -58,11 +58,15 @@ findDistinctTerms<-function(enrichs){
 #' @import igraph
 #' @examples
 #' @return list of parameters
-getNetSummaries<-function(netlist){
+getNetSummaries<-function(netlist,synids=NULL){
   netnames<-lapply(netlist,function(x) x$condition)
   nets<-lapply(netlist,function(x) x$network)
   enrichs<-lapply(netlist,function(x) x$enrichment)
   params<-lapply(netlist,function(x) x$params)
+
+  if(is.null(synids))
+      synids=lapply(netnames,function(x) return(""))
+
   distinct.genes<-findDistinctGenes(nets)
   distinct.drugs<-findDistinctDrugs(nets)
   distinct.terms<-findDistinctTerms(enrichs)
@@ -80,7 +84,9 @@ getNetSummaries<-function(netlist){
     data.frame(Condition=rep(netnames[[x]], nrow(res)),
                mu=rep(params[[x]]$mu, nrow(res)),
                beta=rep(params[[x]]$b, nrow(res)),
-               w=rep(params[[x]]$w,nrow(res)), res)
+               w=rep(params[[x]]$w,nrow(res)),
+               network=rep(synids[[x]],nrow(res)),
+               res)
   }))
 
   unique.nodes<-do.call(rbind,lapply(1:length(netlist),function(x){
@@ -91,6 +97,8 @@ getNetSummaries<-function(netlist){
       w=params[[x]]$w,
       Node=names(distinct.drugs[[x]]),
       NodeWeight=distinct.drugs[[x]],
+      network=synids[[x]],
+
       nodeType='Compound')
     df2= data.frame(Condition=netnames[[x]],
       mu=params[[x]]$mu,
@@ -98,6 +106,7 @@ getNetSummaries<-function(netlist){
       w=params[[x]]$w,
       Node=names(distinct.genes[[x]]),
       NodeWeight=distinct.genes[[x]],
+      network=synids[[x]],
       nodeType='Gene')
        rbind(df1,df2)
     }))
