@@ -46,12 +46,19 @@ getNets<-function(){
 #' @export
 getGeneEntrezMapping<-function(genes){
   #
-  library(biomaRt)
-    mart <- useMart('ensembl',dataset='hsapiens_gene_ensembl')
+                                        #  library(biomaRt)
+    library(AnnotationDbi)
+    library(org.Hs.eg.db)
+    x <- org.Hs.egSYMBOL2EG
+    mapped_genes <- AnnotationDbi::mappedkeys(x)
+      xx <- AnnotationDbi::as.list(x[mapped_genes])
+    inds=match(genes,names(xx ))
+      entrez_list=data.frame(gene=genes,entrezgene=xx[inds])
+#    mart <- useMart('ensembl',dataset='hsapiens_gene_ensembl')
 
-    entrez_list <- getBM(filters ="hgnc_symbol",
-                         attributes = c("hgnc_symbol", "entrezgene"),
-                         values =genes, mart = mart)%>%rename(gene='hgnc_symbol')
+ #   entrez_list <- getBM(filters ="hgnc_symbol",
+ #                        attributes = c("hgnc_symbol", "entrezgene"),
+ #                        values =genes, mart = mart)%>%rename(gene='hgnc_symbol')
     return(entrez_list)
 }
 
