@@ -52,14 +52,12 @@ getGeneEntrezMapping<-function(genes){
     x <- org.Hs.egSYMBOL2EG
     mapped_genes <- AnnotationDbi::mappedkeys(x)
       xx <- AnnotationDbi::as.list(x[mapped_genes])
-    inds=match(genes,names(xx ))
-    entrez_list=data.frame(gene=genes,entrezgene=unlist(xx[inds]))
+    inds=match(genes,names(xx))
+    genes<-genes[which(!is.na(inds))]
+    inds<-inds[which(!is.na(inds))]
+    entrez_list=data.frame(gene=genes,entrezgene=unlist(sapply(xx[inds],function(y)y[1])))
     print(head(entrez_list))
-#    mart <- useMart('ensembl',dataset='hsapiens_gene_ensembl')
 
- #   entrez_list <- getBM(filters ="hgnc_symbol",
- #                        attributes = c("hgnc_symbol", "entrezgene"),
- #                        values =genes, mart = mart)%>%rename(gene='hgnc_symbol')
     return(entrez_list)
 }
 
