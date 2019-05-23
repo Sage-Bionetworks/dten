@@ -53,7 +53,8 @@ getGeneEntrezMapping<-function(genes){
     mapped_genes <- AnnotationDbi::mappedkeys(x)
       xx <- AnnotationDbi::as.list(x[mapped_genes])
     inds=match(genes,names(xx ))
-      entrez_list=data.frame(gene=genes,entrezgene=unlist(xx[inds]))
+    entrez_list=data.frame(gene=genes,entrezgene=unlist(xx[inds]))
+    print(head(entrez_list))
 #    mart <- useMart('ensembl',dataset='hsapiens_gene_ensembl')
 
  #   entrez_list <- getBM(filters ="hgnc_symbol",
