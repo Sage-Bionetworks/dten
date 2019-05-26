@@ -38,10 +38,15 @@ getTermCounts<-function(tab){
 
 buildRepresentativeNetwork<-function(nets,nodelist){
     require(networkx)
-  
+    require(synapser)
+    
   #load nets
+  all.nets<-lapply(nets,function(x) readRDS(synapser::synGet(x)$path))
+  
   #get union of networks
+  full.net<-networkx::union_all(all.nets)
   #filter for nodes that are selected?
+
   #reweight
   #return
     }
@@ -75,8 +80,8 @@ main<-function(){
     sums<-lapply(all.conditions,function(cond){
       stab<-mweights%>%subset(Condition==cond)%>%subset(meanWeight>args$weight)
       nets<-subset(tab,Condition==cond)%>%subset(Node%in%stab$Node)%>%select(network)%>%unique()
-      print(paste("Found",length(nets),'for',cond,'from',nrow(stab),'nodes above threshold'))
-      net<-buildRepresentativeNetwork(nets,stab)
+      print(paste("Found",length(nets$network),'network for',cond,'from',nrow(stab),'nodes above threshold'))
+      net<-buildRepresentativeNetwork(nets$network,stab$Node)
     })
 
 
