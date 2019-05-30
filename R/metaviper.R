@@ -42,7 +42,8 @@ getNets<-function(){
 }
 
 
-#' @import biomaRt
+#' @import AnnotationDbi
+#' @import org.Hs.eg.db
 #' @export
 getGeneEntrezMapping<-function(genes){
   #

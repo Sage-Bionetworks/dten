@@ -5,7 +5,7 @@
 suppressPackageStartupMessages(require(optparse))
 suppressPackageStartupMessages(require(dten))
 suppressPackageStartupMessages(require(methods))
-
+#args=list(nodetableid='syn18820883',termtableid='syn18820885',weight=95)
 getArgs<-function(){
 
   option_list <- list(
@@ -36,21 +36,46 @@ getTermCounts<-function(tab){
   return(tcounts)
 }
 
-buildRepresentativeNetwork<-function(nets,nodelist){
-    require(networkx)
+buildRepresentativeNetwork<-function(nets,node.tab,nodelist,eweight){
+    require(igraph)
     require(synapser)
     
   #load nets
   all.nets<-lapply(nets,function(x) readRDS(synapser::synGet(x)$path))
   
   #get union of networks
-  full.net<-networkx::union_all(all.nets)
+  combined.graph<-do.call(rbind,lapply(all.nets,function(x) igraph::as_data_frame(x$network)))
+  merged.graph<-combined.graph%>%group_by(from,to)%>%summarize(totWeight=sum(weight))%>%distinct()
+  weight.graph<-subset(merged.graph,totWeight>eweight)
+#  weight.graph=merged.graph  
   #filter for nodes that are selected?
-
-  #reweight
-  #return
+  #nodelist<-intersect(node.tab$Node,union(weight.graph$from,weight.graph$to))
+  vals=intersect(which(weight.graph$from%in%nodelist),which(weight.graph$to%in%nodelist))
+  red.graph<-weight.graph[vals,]%>%rename(weight='totWeight')
+  #red.graph<-weight.graph%>%rename(weight='totWeight')
+  
+  new.graph <- igraph::graph_from_data_frame(red.graph,directed=FALSE,vertices=subset(node.tab,Node%in%union(red.graph$from,red.graph$to)))
+#  inds=match(node.tab$Node,names(igraph::V(graph = new.graph)))
+#  w.graph=igraph::set_vertex_attr(new.graph,name='weight',index=igraph::V(new.graph),value=node.tab$meanWeight[inds])
+ # w.graph=igraph::set_vertex_attr(w.graph,name='type',index=igraph::V(w.graph),value=node.tab$nodeType[inds])
+ list(network=new.graph,tab=red.graph)
     }
 
+getSubnetByNode<-function(nodename){
+
+}
+
+saveToNdex<-function(network,name,collection){
+  require(ndexr)
+  require(RCy3)
+  ndexcon <- ndex_connect()
+  
+ net.suid <- RCy3::createNetworkFromIgraph(network, name,collection)
+ # user <- "sara.gosline"  #replace with your info
+#  pass <- "nedexpass"  #replace with your info
+#  exportNetworkToNDEx(user, pass, isPublic=TRUE, network=net.suid)
+  
+}
 main<-function(){
 
     args<-getArgs()
@@ -75,16 +100,26 @@ main<-function(){
     p2=ggplot(tcounts)+geom_histogram(mapping=aes(x=Terms,fill=Condition),position='dodge')+ggtitle(paste('Unique EnrichmentTerms\n',args$output))
     ggsave(tname)
     
+    eweight=200
     #get node weights
     all.conditions<-unique(mweights$Condition)
+    
     sums<-lapply(all.conditions,function(cond){
-      stab<-mweights%>%subset(Condition==cond)%>%subset(meanWeight>args$weight)
-      nets<-subset(tab,Condition==cond)%>%subset(Node%in%stab$Node)%>%select(network)%>%unique()
-      print(paste("Found",length(nets$network),'network for',cond,'from',nrow(stab),'nodes above threshold'))
-      net<-buildRepresentativeNetwork(nets$network,stab$Node)
+      dis.net<-mweights%>%subset(Condition==cond)
+      nodes=dis.net$Node#subset(dis.net,meanWeight>args$weight)$Node
+      
+      nets<-subset(tab,Condition==cond)%>%subset(Node%in%nodes)%>%select(network)%>%unique()
+ #     print(paste("Found",length(nets$network),'networks for',cond,'from',nrow(stab),'nodes above threshold'))
+      comb<-buildRepresentativeNetwork(nets$network,dis.net[,-1],nodelist=nodes,eweight)
+      print(paste('found network with',length(igraph::V(comb$network)),'nodes and',length(igraph::E(comb$network)),'edges'))
+      saveToNdex(comb$network,name=cond,collection='DTEN Networks')
+      df=data.frame(condition=cond,comb$tab)
+      df
     })
-
-
+    res=do.call(rbind,sums)
+    write.table(res,paste(args$output,'allNetworkResults.tsv',sep=''),sep='\t')
+    write.table(mweights,paste(args$output,'allNodeResults.tsv',sep=''),sep='\t')
+    #  names(sums)<-all.conditions
 }
 
 main()
