@@ -46,8 +46,7 @@ getNets<-function(){
 #' @import org.Hs.eg.db
 #' @export
 getGeneEntrezMapping<-function(genes){
-  #
-                                        #  library(biomaRt)
+
     library(AnnotationDbi)
     library(org.Hs.eg.db)
     x <- org.Hs.egSYMBOL2EG
@@ -80,8 +79,10 @@ getProteinsFromGenesCondition<-function(tidied.df,condition,idtype){
     vals=tidied.df$sample[which(tidied.df$condition==condition)]
   # print(length(vals))
 
-    cond<-getViperForCondition(res,which(colnames(res)%in%vals))
-    navals<-which(is.na(names(cond)))
+  cond<-getViperForCondition(res,which(colnames(res)%in%vals))
+  #map back to hugo if entrez.
+
+  navals<-which(is.na(names(cond)))
     if(length(navals)>0)
       cond=cond[-navals]
 

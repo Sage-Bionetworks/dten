@@ -27,18 +27,18 @@ main<-function(){
 
   ext <- rev(unlist(strsplit(basename(tab),split='.',fixed=T)))[1]
 
-#  if(ext=='gz')
-#    tab<-gzfile(tab,'rt')
   tidied.df<-read.table(tab,sep=',',header=T)
 
   req.names=c('counts','gene','sample','conditions')
+
   #check names
   if(length(setdiff(req.names,names(tidied.df)))>0){
     print(paste("Data frame does not have required header:",paste(req.names,collapse=',')))
 
-  print('Requires file name, id-type (entrez or hugo), and condition of interest as input')
- # q('no')
+    print('Requires file name, id-type (entrez or hugo), and condition of interest as input')
+
   }
+
   cond=args$condition
   if(is.null(cond))
       cond<-setdiff(unique(tidied.df$conditions),c(NA,""))
@@ -49,7 +49,7 @@ main<-function(){
       write.table(res,file=paste(gsub(' ','',co),args$output,sep=''),sep='\t',quote=F,row.names=F)
 
   })
-#   cat(paste(cond,collapse='\n'),file='conditions.txt')
+
 
 }
 
