@@ -20,6 +20,8 @@ inputs:
     type: string
   output-project-id:
     type: string
+  metaviper-store-id:
+    type: string
   name:
     type: string
 
@@ -31,7 +33,6 @@ outputs:
         type: array
         items: File
     outputSource: build-networks/network-file
-
 
 requirements:
   - class: ScatterFeatureRequirement
@@ -52,6 +53,15 @@ steps:
       id-type: gene-id-type
     out:
       [protein-lists]
+  store-prots:
+    run: https://raw.githubusercontent.com/Sage-Bionetworks/synapse-client-cwl-tools/master/synapse-store-tool.cwl
+    scatter: file_to_store
+    in:
+      file_to_store:  get-prots/protein-lists
+      synapse_config: synapse-config
+      parentid: metaviper-store-id
+    out:
+      []
   build-networks:
     scatter: [beta, mu, w]
     scatterMethod: flat_crossproduct
