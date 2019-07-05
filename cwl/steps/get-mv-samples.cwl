@@ -4,6 +4,7 @@ label: get-mv-samples
 id: get-mv-samples
 
 baseCommand: ['Rscript','/usr/local/bin/subSampleTumorTypes.R']
+stdout: message
 
 requirements:
   - class: DockerRequirement
@@ -32,3 +33,8 @@ inputs:
 outputs:
   synids:
     type: string[]
+    outputBinding:
+       glob: message
+       loadContents: true
+       outputEval: $(self[0].contents.split('\n'))
+

@@ -17,9 +17,9 @@ getArgs<-function(){
 main<-function(){
     args<-getArgs()
     require(synapser)
-    synLogin()
+    synLogin(silent=TRUE)
 
-    res=sample(x=synapser::synTableQuery(paste0('select id from ',args$fv,' where parentId = \'',args$folder,'\''))$asDataFrame()$id,args$num)
+    invisible(capture.output(res<-sample(x=synapser::synTableQuery(paste0('select id from ',args$fv,' where parentId = \'',args$folder,'\''))$asDataFrame()$id,args$num)))
     cat(res,sep='\n')
 }
 

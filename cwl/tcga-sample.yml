@@ -8,6 +8,6 @@ w-params: [1,10,100,0.1,0.01]
 output-parent-id: syn18812771
 output-project-id: syn16941818
 name: TCGA Sample 10 Results
-num-samps: 10
+num-samps: "10"
 input-fileview: syn20401329
 metaviper-folder: syn18918343
