@@ -19,8 +19,8 @@ main<-function(){
     require(synapser)
     synLogin()
 
-    sample(x=synapser::synTableQuery(paste0('select id from ',args$fv,' where parentId = \'',args$folder,'\''))$asDataFrame()$id,args$num)
-
+    res=sample(x=synapser::synTableQuery(paste0('select id from ',args$fv,' where parentId = \'',args$folder,'\''))$asDataFrame()$id,args$num)
+    cat(res,sep='\n')
 }
 
 main()
