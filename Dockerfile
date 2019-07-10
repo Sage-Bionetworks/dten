@@ -16,5 +16,6 @@ RUN Rscript -e 'devtools::install_deps(pkg = ".", dependencies=TRUE,threads = ge
 RUN R CMD INSTALL .
 
 COPY bin/*.R /usr/local/bin/
+COPY analysis/*.R /usr/local/bin/
 
 RUN chmod a+x /usr/local/bin/*.R
