@@ -32,6 +32,7 @@ getViperForCondition <- function(v.res,condition,pvalthresh=0.05,useEntrez=TRUE,
     }
 
 #' @import aracne.networks
+#' @export 
 getNets<-function(){
     require(aracne.networks)
                 #get aracne networks

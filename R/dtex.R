@@ -22,11 +22,23 @@ require(synapser)
 #' @keywords
 #' @export
 #' @examples
-#' @return
+#' @return list of node names
 #'
 getDrugs <-function(drug.graph){
         drugs<-names(which(degree(drug.graph,mode="out")>0))
     drugs
+}
+
+#' \code{getDrugNodes} Identifies drugs in a
+#' @param drug.graph
+#' @keywords
+#' @export
+#' @examples
+#' @return list of nodes
+#'
+getDrugNodes <-function(drug.graph){
+  drugs<-V(drug.graph)[which(degree(drug.graph,mode="out")>0)]
+  drugs
 }
 
 #' \code{getDrugIds} Identifies drugs in a
