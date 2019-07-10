@@ -6,7 +6,12 @@ RUN apt-get update -qq && apt-get -y install libffi-dev
 RUN Rscript -e "install.packages('devtools')"
 RUN Rscript -e "install.packages('optparse')"
 RUN Rscript -e "install.packages('synapser', repos=c('http://ran.synapse.org', 'http://cran.fhcrc.org'))"
-RUN Rscript -e "source('http://bioconductor.org/biocLite.R')" -e "biocLite('viper')" -e "biocLite('aracne.networks')" -e "biocLite('topGO')"  -e "biocLite('org.Hs.eg.db')"
+RUN Rscript -e "install.packages('BiocManager')"
+RUN Rscript -e "BiocManager::install('viper')" \
+  -e "BiocManager::install('aracne.networks')" \
+  -e "BiocManager::install('topGo')" \ 
+  -e "BiocManager::install('org.Hs.eg.db')" 
+
 RUN Rscript -e "devtools::install_github('sgosline/PCSF')"
 
 COPY . dten
