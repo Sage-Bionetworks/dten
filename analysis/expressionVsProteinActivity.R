@@ -6,6 +6,7 @@ synLogin()
 require(tidyverse)
 expr.id='syn18523913'
 
+this.script='https://raw.githubusercontent.com/Sage-Bionetworks/dten/master/analysis/expressionVsProteinActivity.R'
 run.viper.tidy<-function(tab){
   library(dten)
   mat<-tab%>%dplyr::select(sample,counts,gene)#%>%unique()%>%spread(key=gene,value=counts)
@@ -90,9 +91,15 @@ full.res<-rbind(data.frame(ecors,method='expression within condition'),
 
 ggplot(full.res)+geom_boxplot(aes(x=condition,y=correlation,col=method))+ggtitle("Sample correlation within various conditions")+theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+ggsave('correlationAcrossAll.png')
+synStore(File('correlationAcrossAll.png',parentId='syn20503265'),executed=this.script,used=expr.id)
 
 require(ggplot2)
 full.res<-rbind(data.frame(ecors,method='expression within condition'),
   data.frame(mcors,method='metaviper within condition'))
 
 ggplot(full.res)+geom_boxplot(aes(x=condition,y=correlation,col=method))+ggtitle("Sample correlation within various conditions")+theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+ggsave('correlationAcrossCond.png')
+synStore(File('correlationAcrossCond.png',parentId='syn20503265'),executed=this.script,used=expr.id)
