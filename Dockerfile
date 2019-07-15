@@ -1,4 +1,4 @@
-FROM rocker/tidyverse
+FROM rocker/tidyverse:3.5.3
 
 RUN apt-get install -y net-tools
 RUN apt-get update -qq && apt-get -y install libffi-dev
