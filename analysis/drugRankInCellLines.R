@@ -46,7 +46,8 @@ rank.drugs<-function(node.tab=node.syntable,comp.tab=tab.with.id){
   tests=comp.tab%>%
     subset(response_type%in%c("AUC_Trapezoid","IC50_abs","IC50_rel"))%>%
       select(std_name,symptom_name,response_type,response)%>%unique()%>%rename(Node='std_name',TestedIn='symptom_name')
-  topComps<-topComps%>%left_join(tests,by='Node')
+  topComps<-topComps%>%left_join(tests,by='Node')%>%subset(!is.na(TestedIn))
+
 #  topComps$hasData=topComps$Node%in%tab.with.id$std_name
   return(topComps)
 }
@@ -69,4 +70,7 @@ plotRes<-function(compList,parentid='syn20503265'){
   
 }
 
-plotRes(rank.drugs())
+drug.rank<-rank.drugs()%>%filter(meanWeight>75)%>%select(Condition,Node)
+#plotRes(drug.rank)
+plotNetsByDrugInCondition(unique(drug.rank$Condition),unique(drug.rank$Node),node.syntable)
+
