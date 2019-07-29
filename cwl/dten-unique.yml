@@ -1,4 +1,4 @@
-input-file-id: syn18523913
+input-query-string:
 synapse-config:
   class: File
   path: /home/sgosline/.synapseConfig
@@ -12,5 +12,5 @@ output-project-id: syn16941818
 gene-data:
   class: File
   path: newTab.csv
-name: Pan-NF Unique Node Networks
+name: Updated Pan-NF Unique Node Networks
 id-type: hugo

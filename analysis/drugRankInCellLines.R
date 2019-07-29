@@ -70,7 +70,23 @@ plotRes<-function(compList,parentid='syn20503265'){
   
 }
 
-drug.rank<-rank.drugs()%>%filter(meanWeight>75)%>%select(Condition,Node)
-#plotRes(drug.rank)
-plotNetsByDrugInCondition(unique(drug.rank$Condition),unique(drug.rank$Node),node.syntable)
+drug.out<-rank.drugs()
+plotRes(drug.out)
+
+drug.out<-rank.drugs(node.tab='syn18779013')
+drug.rank<-drug.out%>%filter(meanWeight>50)%>%select(Condition,Node)
+#plot in cytoscape
+###todo: make this part of the package
+source("../bin/evalNetworkResults.R")
+plotNetsByDrugInCondition(unique(drug.rank$Condition),unique(drug.rank$Node),node.syntable,order=3)
+
+#then plot curves.
+##todo: how can we automate this? make a workflow/docker image? 
+source("../../NEXUS/bin/plotDrugsAcrossCells.R")
+for(i in unique(drug.rank$Node))
+  plotDoseResponseCurve(i,c('pNF','no symptom','MPNST'))
+
+drugs<-drug.out%>%select(Condition,Node,meanWeight)%>%subset(Condition=='Malignant Peripheral Nerve Sheath Tumor')%>%ungroup()%>%select(Node)%>%distinct()
+for(i in drugs)
+  plotDoseResponseCurve(i,c('pNF','no symptom','MPNST'))
 

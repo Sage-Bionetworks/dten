@@ -54,29 +54,36 @@ buildRepresentativeNetwork<-function(nets,node.vals,eweight=0.0){
   #load nets
   all.nets<-lapply(nets,function(x) readRDS(synapser::synGet(x)$path))
   
-  #get union of networks
-  combined.verts<-NULL
-  for(i in 1:length(all.nets))
-    combined.verts<-c(combined.verts,V(all.nets[[i]]$network))
-  
   combined.graph<-do.call(rbind,lapply(all.nets,function(x) igraph::as_data_frame(x$network)))
+  
+  all.nodes<-do.call(rbind,lapply(all.nets,function(x) data.frame(Node=names(V(x$network)),Type=V(x$network)$type,Weight=V(x$network)$prize)))
+  
   merged.graph<-combined.graph%>%
       group_by(from,to)%>%
       summarize(totWeight=sum(weight))%>%
       distinct()
   
+  merged.nodes<-all.nodes%>%
+    group_by(Node)%>%
+    summarize(meanWeight=mean(Weight))%>%
+    distinct()
+  merged.nodes$nodeType='Gene'
+  merged.nodes$nodeType[which(merged.nodes$Node%in%subset(all.nodes,Type=='Compound')$Node)]<-'Compound'
   weight.graph<-subset(merged.graph,totWeight>eweight)
 #  weight.graph=merged.graph  
   #filter for nodes that are selected?
-  vals=intersect(which(weight.graph$from%in%node.vals$Node),which(weight.graph$to%in%node.vals$Node))
-  red.graph<-weight.graph[vals,]%>%rename(weight='totWeight')
+ # vals=intersect(which(weight.graph$from%in%node.vals$Node),which(weight.graph$to%in%node.vals$Node))
+#  red.graph<-weight.graph[vals,]%>%rename(weight='totWeight')
   
 
-  red.verts<-subset(node.vals,Node%in%union(red.graph$from,red.graph$to))%>%select(Node,NodeWeight,nodeType)%>%group_by(Node,nodeType)%>%summarize(meanWeight=mean(NodeWeight))
+#  red.verts<-subset(node.vals,Node%in%union(red.graph$from,red.graph$to))%>%
+#        select(Node,NodeWeight,nodeType)%>%
+#        group_by(Node,nodeType)%>%
+#        summarize(meanWeight=mean(NodeWeight))
     
-  new.graph <- igraph::graph_from_data_frame(red.graph,directed=FALSE,vertices=red.verts)
+  new.graph <- igraph::graph_from_data_frame(weight.graph,directed=FALSE,vertices=merged.nodes)
   
-  list(network=new.graph,tab=red.graph)
+  list(network=new.graph,tab=weight.graph)
 }
 
 ##gets a subnet (without drugs) x steps away from node of interest
@@ -110,7 +117,7 @@ saveToNdex<-function(network,name,collection='DTEN Networks'){
 
 
 ####plot nets by drug
-plotNetsByDrugInCondition<-function(all.conditions,all.nodes,tab.id){
+plotNetsByDrugInCondition<-function(all.conditions,all.nodes,tab.id,order=2){
   tab<-synTableQuery(paste("select * from",tab.id))$asDataFrame()
   
   sums<-lapply(all.conditions,function(cond){
@@ -126,7 +133,7 @@ plotNetsByDrugInCondition<-function(all.conditions,all.nodes,tab.id){
       print(paste('found',cond,'network with',length(igraph::V(comb$network)),'nodes and',length(igraph::E(comb$network)),'edges'))
       res=lapply(all.nodes,function(n){
         print(n)
-        getSubnetByNode(n,comb,name=paste(cond,n,sep='_'))
+        getSubnetByNode(n,comb,name=paste(cond,n,sep='_'),order=order)
       })
     }
   })
