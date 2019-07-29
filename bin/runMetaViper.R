@@ -27,7 +27,11 @@ main<-function(){
 
   ext <- rev(unlist(strsplit(basename(tab),split='.',fixed=T)))[1]
 
-  tidied.df<-read.table(tab,sep=',',header=T)
+  if(length(grep('csv'))>0)
+	  sep=','
+  else
+	  sep='\t'
+  tidied.df<-read.table(tab,sep=sep,header=T)
 
   req.names=c('counts','gene','sample','conditions')
 

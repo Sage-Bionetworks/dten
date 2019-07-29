@@ -45,11 +45,11 @@ steps:
     in:
       query: input-query-string
       synapse_config: synapse-config
-    out: [filepath]
+    out: [query_result]
   get-prots:
     run: steps/proteins-from-genes.cwl
     in:
-      gene-data: download-file/filepath
+      gene-data: download-file/query_result
       id-type: gene-id-type
     out:
       [protein-lists]
