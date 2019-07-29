@@ -1,4 +1,4 @@
-input-query-string:
+input-query-string: SELECT Symbol as gene, tumorType as "condition", specimenID as "sample", zScore as counts FROM syn20449214
 synapse-config:
   class: File
   path: /home/sgosline/.synapseConfig
