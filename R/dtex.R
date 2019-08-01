@@ -8,11 +8,12 @@
 #' @examples
 #' @return
 #'
-loadDrugGraph <- function(){
+loadDrugGraph <- function(minQuant=2){
 require(synapser)
   ##load drug-target networ
   synLogin()
   drug.graph<-readRDS(synGet('syn11802194')$path)
+  edges<-intersect(which(!is.na(E(drug.graph)$n_qualitative)),which(E(drug.graph)$n_quantitative>2))
   return(drug.graph)
 }
 
