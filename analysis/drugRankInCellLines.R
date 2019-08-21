@@ -1,4 +1,3 @@
-
 ##drug rank vs. auc
 
 require(synapser)
@@ -31,7 +30,7 @@ node.syntable='syn18820883'
 ###rank drugs by mean weigth in each condition, join with drug data
 rank.drugs<-function(node.tab=node.syntable,comp.tab=tab.with.id){
   dtab<-synTableQuery(paste('select Condition,Node,NodeWeight,nodeType from',node.tab))$asDataFrame()
-  
+
   res<-dtab%>%select(-c(ROW_ID,ROW_VERSION))%>%
     group_by(Condition,Node)%>%
     mutate(meanWeight=mean(NodeWeight))%>%
@@ -39,10 +38,10 @@ rank.drugs<-function(node.tab=node.syntable,comp.tab=tab.with.id){
     arrange(desc(meanWeight))%>%
     select(Condition,Node,nodeType,meanWeight,rank)%>%
     distinct()
-  
+
   topGenes<-subset(res,nodeType=='Gene')
   topComps<-subset(res,nodeType=='Compound')
-  
+
   tests=comp.tab%>%
     subset(response_type%in%c("AUC_Trapezoid","IC50_abs","IC50_rel"))%>%
       select(std_name,symptom_name,response_type,response)%>%unique()%>%rename(Node='std_name',TestedIn='symptom_name')
@@ -56,24 +55,24 @@ rank.drugs<-function(node.tab=node.syntable,comp.tab=tab.with.id){
 plotRes<-function(compList,parentid='syn20503265'){
   compList$response[!is.finite(compList$response)]<-NA
   ggplot(subset(compList,response_type=='AUC_Trapezoid')%>%ungroup())+geom_point(aes(x=meanWeight,y=response,col=Condition,shape=TestedIn))+ggtitle('AUC of response in various cell lines')
-  
+
   ggsave('aucRes.png')
   ggplot(subset(compList,response_type=='IC50_abs')%>%ungroup())+geom_point(aes(x=meanWeight,y=-log10(response),col=Condition,shape=TestedIn))+scale_y_log10()+ggtitle('Absolute IC50 of response in various cell lines')
   ggsave('ic50abs.png')
-  
+
   ggplot(subset(compList,response_type=='IC50_rel')%>%ungroup())+geom_point(aes(x=meanWeight,y=-log10(response),col=Condition,shape=TestedIn))+scale_y_log10()+ggtitle('Relative IC50 of response in various cell lines')
   ggsave('ic50rel.png')
-  
+
   for(f in c('aucRes.png','ic50abs.png','ic50rel.png'))
     synStore(File(f,parentId=parentid),used=c(node.syntable,synId,syn.tab),executed=this.script)
 
-  
+
 }
 
 drug.out<-rank.drugs()
 plotRes(drug.out)
 
-drug.out<-rank.drugs(node.tab='syn18779013')
+drug.out<-rank.drugs(node.tab='syn20609193')
 drug.rank<-drug.out%>%filter(meanWeight>50)%>%select(Condition,Node)
 #plot in cytoscape
 ###todo: make this part of the package
@@ -81,7 +80,7 @@ source("../bin/evalNetworkResults.R")
 plotNetsByDrugInCondition(unique(drug.rank$Condition),unique(drug.rank$Node),node.syntable,order=3)
 
 #then plot curves.
-##todo: how can we automate this? make a workflow/docker image? 
+##todo: how can we automate this? make a workflow/docker image?
 source("../../NEXUS/bin/plotDrugsAcrossCells.R")
 for(i in unique(drug.rank$Node))
   plotDoseResponseCurve(i,c('pNF','no symptom','MPNST'))
@@ -89,4 +88,3 @@ for(i in unique(drug.rank$Node))
 drugs<-drug.out%>%select(Condition,Node,meanWeight)%>%subset(Condition=='Malignant Peripheral Nerve Sheath Tumor')%>%ungroup()%>%select(Node)%>%distinct()
 for(i in drugs)
   plotDoseResponseCurve(i,c('pNF','no symptom','MPNST'))
-
