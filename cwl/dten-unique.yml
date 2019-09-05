@@ -1,4 +1,4 @@
-input-query-string: SELECT Symbol as gene, tumorType as "condition", specimenID as "sample", zScore as counts FROM syn20449214 WHERE  ( ( "isCellLine" IS NULL ) OR "isCellLine" = 'FALSE' ) AND ("transplantationType" is NULL OR "transplantationType" = '')
+input-query-string: SELECT zScore as "counts", Symbol as gene, specimenID as "sample", tumorType as "conditions" FROM syn20449214 WHERE  ( ( "isCellLine" IS NULL ) OR "isCellLine" = 'FALSE' ) AND ("transplantationType" is NULL OR "transplantationType" = '')
 synapse-config:
   class: File
   path: /home/sgosline/.synapseConfig
