@@ -6,15 +6,15 @@ suppressPackageStartupMessages(require(optparse))
 suppressPackageStartupMessages(require(dten))
 suppressPackageStartupMessages(require(methods))
 
-cur.node.res<-'syn18820883'
-cur.term.res<-'syn18820885'
+cur.node.res<-'syn20609193'
+cur.term.res<-'syn20609194'
 
 #args=list(nodetableid='syn18820883',termtableid='syn18820885',weight=95)
 getArgs<-function(){
 
   option_list <- list(
-    make_option(c("-i", "--nodetableid"), dest='nodetableid',help='Synapse id of table'),
-    make_option(c('-t',"--termtableid"),dest='termtableid',help='Synapse id of enrichment term table'),
+    make_option(c("-i", "--nodetableid"), dest='nodetableid',help='Synapse id of table',default=cur.node.res),
+    make_option(c('-t',"--termtableid"),dest='termtableid',help='Synapse id of enrichment term table',default=cur.term.res),
     make_option(c("-o", "--output"), default="test", dest='output',help = "Prefix to add to output files"),
     make_option(c('-w','--weight'),dest='weight',default=0.0,help='Weight threshold for evaluating nodes/drugs of interest'),
     make_option(c('-n','--node'),dest='nodename',default='',help='Name of node to center upon'),
@@ -125,13 +125,13 @@ plotNetsByDrugInCondition<-function(all.conditions,all.nodes,tab.id,order=2){
     cond.tab<-subset(tab,Condition==cond)
     nets<-unique(cond.tab$network)
     #get nodes that are in that network
-    all.nodes<-intersect(cond.tab$Node,all.nodes)
+    sel.nodes<-intersect(cond.tab$Node,all.nodes)
     
-    if(length(all.nodes)>0){
+    if(length(sel.nodes)>0){
       #build a representative network
       comb<-buildRepresentativeNetwork(nets,tab)
       print(paste('found',cond,'network with',length(igraph::V(comb$network)),'nodes and',length(igraph::E(comb$network)),'edges'))
-      res=lapply(all.nodes,function(n){
+      res=lapply(sel.nodes,function(n){
         print(n)
         getSubnetByNode(n,comb,name=paste(cond,n,sep='_'),order=order)
       })
@@ -192,4 +192,4 @@ main<-function(){
     #  names(sums)<-all.conditions
 }
 
-main()
+#main()

@@ -73,11 +73,11 @@ drug.out<-rank.drugs()
 plotRes(drug.out)
 
 drug.out<-rank.drugs(node.tab='syn20609193')
-drug.rank<-drug.out%>%filter(meanWeight>50)%>%select(Condition,Node)
+drug.rank<-drug.out%>%filter(meanWeight>40)%>%select(Condition,Node)%>%distinct()
 #plot in cytoscape
 ###todo: make this part of the package
 source("../bin/evalNetworkResults.R")
-plotNetsByDrugInCondition(unique(drug.rank$Condition),unique(drug.rank$Node),node.syntable,order=3)
+plotNetsByDrugInCondition(unique(drug.rank$Condition),unique(drug.rank$Node),node.syntable,order=2)
 
 #then plot curves.
 ##todo: how can we automate this? make a workflow/docker image?
