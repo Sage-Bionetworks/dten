@@ -27,7 +27,7 @@ main<-function(){
 
   ext <- rev(unlist(strsplit(basename(tab),split='.',fixed=T)))[1]
 
-  if(length(grep('csv'))>0)
+  if(length(grep('csv',ext))>0)
 	  sep=','
   else
 	  sep='\t'
@@ -36,8 +36,9 @@ main<-function(){
   req.names=c('counts','gene','sample','conditions')
 
   #check names
-  if(length(setdiff(req.names,names(tidied.df)))>0){
-    print(paste("Data frame does not have required header:",paste(req.names,collapse=',')))
+  mn<-setdiff(req.names,names(tidied.df))
+  if(length(mn)>0){
+    print(paste("Data frame does not have required header:",paste(mn,collapse=',')))
 
     print('Requires file name, id-type (entrez or hugo), and condition of interest as input')
 

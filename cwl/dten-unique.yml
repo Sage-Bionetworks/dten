@@ -1,7 +1,7 @@
 input-query-string: SELECT zScore as "counts", Symbol as gene, specimenID as "sample", tumorType as "conditions" FROM syn20449214 WHERE  ( ( "isCellLine" IS NULL ) OR "isCellLine" = 'FALSE' ) AND ("transplantationType" is NULL OR "transplantationType" = '')
 synapse-config:
   class: File
-  path: /home/sgosline/.synapseConfig
+  path: /Users/sgosline/.synapseConfig
 gene-id-type: hugo
 beta-params: [1,2,5,10,20,30]
 mu-params: [0.1,0.01,0.001,0.0001,10e-5]

@@ -1,7 +1,7 @@
 input-file-id: syn18523913
 synapse-config:
   class: File
-  path: /home/sgosline/.synapseConfig
+  path: /Users/sgosline/.synapseConfig
 gene-id-type: hugo
 beta-params: [1,2,5,10,20,30]
 mu-params: [0.1,0.01,0.001,0.0001,10e-5]
