@@ -19,6 +19,10 @@ inputs:
     type: string
     inputBinding:
       prefix: '-d'
+  condition:
+    type: string?
+    inputBinding:
+      prefix: '-c'
 
 
 outputs:
