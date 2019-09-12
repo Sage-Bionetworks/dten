@@ -47,7 +47,7 @@ steps:
     scatter:
       - condition
       - gene-data
-    scattermethod: dotproduct
+    scatterMethod: dotproduct
     in:
       gene-data: queries
       condition: conditions
