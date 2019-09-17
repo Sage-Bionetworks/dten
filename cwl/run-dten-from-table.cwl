@@ -4,8 +4,8 @@ cwlVersion: v1.0
 class: Workflow
 
 inputs:
-  input-query-string:
-    type: string
+  input-query-list:
+    type: string[]
   synapse-config:
     type: File
   gene-id-type:
@@ -42,8 +42,9 @@ requirements:
 steps:
   download-file:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/synapse-client-cwl-tools/master/synapse-query-tool.cwl
+    scatter: query
     in:
-      query: input-query-string
+      query: input-query-list
       synapse_config: synapse-config
     out: [query_result]
   get-prots:
