@@ -6,8 +6,8 @@ suppressPackageStartupMessages(require(optparse))
 suppressPackageStartupMessages(require(dten))
 suppressPackageStartupMessages(require(methods))
 
-cur.node.res<-'syn20609193'
-cur.term.res<-'syn20609194'
+cur.node.res<-'syn20717939'
+cur.term.res<-'syn20717940'
 
 #args=list(nodetableid='syn18820883',termtableid='syn18820885',weight=95)
 getArgs<-function(){
@@ -192,4 +192,4 @@ main<-function(){
     #  names(sums)<-all.conditions
 }
 
-#main()
+main()

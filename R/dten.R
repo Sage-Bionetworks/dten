@@ -51,13 +51,51 @@ findDistinctTerms<-function(enrichs){
 
 
 #'
+#' \code{getAllNetStats} Gets all the summary stats about the network
+#' without restricting to unique nodes (like \code{getNetSummaries} does)
+#' Also, we no longer care about enrichment terms
+#' @param list of objects from network calls
+#' @keywords
+#' @export
+#' @import igraph
+#' @import dplyr
+#' @examples
+#' @return list of node tables
+getAllNetStats<-function(netlist,synids=NULL){
+ netnames<-lapply(netlist,function(x) x$condition)
+ nets<-lapply(netlist,function(x) x$network)
+ params<-lapply(netlist,function(x) x$params)
+
+  if(is.null(synids))
+      synids=lapply(netnames,function(x) return(""))
+
+  ##what do i want to see?
+  require(dplyr)
+
+  all.nodes<-do.call(rbind,lapply(1:length(netlist),function(x){
+          params[[x]]$mu<-params[[x]][[3]]
+    df1=data.frame(Condition=netnames[[x]],
+      mu=params[[x]]$mu,
+      beta=params[[x]]$b,
+      w=params[[x]]$w,
+      Node=V(nets[[x]])$name,
+      NodeWeight=V(nets[[x]])$prize,
+      nodeType=V(nets[[x]])$type,
+      network=synids[[x]])
+    }))
+
+  return(list(nodes=all.nodes))
+
+    }
+#'
 #\code{getNetSummaries} Gets summary stats about network
 #' @param list of objects from the network calls
 #' @keywords
 #' @export
 #' @import igraph
+#' @import dplyr
 #' @examples
-#' @return list of parameters
+#' @return list of term and node tables
 getNetSummaries<-function(netlist,synids=NULL){
   netnames<-lapply(netlist,function(x) x$condition)
   nets<-lapply(netlist,function(x) x$network)

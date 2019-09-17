@@ -7,7 +7,7 @@
 getDrugs(drug.graph)
 }
 \value{
-
+list of node names
 }
 \description{
 \code{getDrugs} Identifies drugs in a

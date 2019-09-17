@@ -12,7 +12,8 @@ getArgs<-function(){
     make_option(c("-i", "--input"), dest='input',help='Comma-delimited list of RDS files containing PCSF and enrichment output'),
     make_option(c("-o", "--output"), default="test", dest='output',help = "Prefix to add to output files"),
     make_option(c('-p',"--project"),dest='project',default=NULL,help='Synapse id of project'),
-    make_option(c('-f',"--folder"),dest='folder',default=NULL,help='Synapse id of folder to store network')
+    make_option(c('-f',"--folder"),dest='folder',default=NULL,help='Synapse id of folder to store network'),
+    make_option(c('-u',"--unique"),dest='unique',action='store_true',default=FALSE,help='Only save those nodes unique to each parameter space')
   )
 
   args=parse_args(OptionParser(option_list = option_list))
@@ -101,19 +102,23 @@ main<-function(){
   print(paste("Loaded",length(all.nets),'networks'))
 
      synids<-storeNets(all.nets,args$folder)
-    summary<-dten::getNetSummaries(all.nets,synids)
+     if(args$unique){
+      summary<-dten::getNetSummaries(all.nets,synids)
+     }else{
+       summary<-dten::getAllNetStats(all.nets,synids)
+     }
 
 
   nfile=paste(gsub(" ","",args$output),'nodeOutput.tsv',sep='')
-  tfile=paste(gsub(" ","",args$output),'termOutput.tsv',sep='')
+#  tfile=paste(gsub(" ","",args$output),'termOutput.tsv',sep='')
   writeTab(nfile,summary$nodes)
-  writeTab(tfile,summary$terms)
+#  writeTab(tfile,summary$terms)
 
   if(!is.null(args$project)){
     n.tabname=paste(args$output,'DTEN Node results')
-    t.tabname=paste(args$output,'DTEN Term results')
+#    t.tabname=paste(args$output,'DTEN Term results')
     storeTab(values=summary$nodes,tabname=n.tabname,synid=args$project)
-    storeTab(values=summary$terms,tabname=t.tabname,synid=args$project)
+ #   storeTab(values=summary$terms,tabname=t.tabname,synid=args$project)
   }
 }
 

@@ -12,17 +12,19 @@ requirements:
 
 inputs:
   gene-data:
-    type: File
+    type: File[]
     inputBinding:
       prefix: '-i'
+      itemSeparator: ','
   id-type:
     type: string
     inputBinding:
       prefix: '-d'
   condition:
-    type: string?
+    type: string[]?
     inputBinding:
       prefix: '-c'
+      itemSeparator: ','
 
 
 outputs:

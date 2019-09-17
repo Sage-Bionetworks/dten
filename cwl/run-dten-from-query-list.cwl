@@ -42,14 +42,17 @@ requirements:
   - class: MultipleInputFeatureRequirement
 
 steps:
+  download-file:
+    run: https://raw.githubusercontent.com/Sage-Bionetworks/synapse-client-cwl-tools/master/synapse-query-tool.cwl
+    scatter: query
+    in:
+      query: queries
+      synapse_config: synapse-config
+    out: [query_result]
   get-prots:
     run: steps/proteins-from-genes.cwl
-    scatter:
-      - condition
-      - gene-data
-    scatterMethod: dotproduct
     in:
-      gene-data: queries
+      gene-data: download-file/query_result
       condition: conditions
       id-type: gene-id-type
     out:

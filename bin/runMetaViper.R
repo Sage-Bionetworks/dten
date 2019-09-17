@@ -7,10 +7,10 @@ require(methods)
 getArgs<-function(){
 
   option_list <- list(
-    make_option(c("-i", "--input"), dest='input',help='Tab-delimited file of expression values in tidied format with the following column names: counts,gene,sample,conditions'),
+    make_option(c("-i", "--input"), dest='input',help='Comma-delimited list of tab-delimited file of expression values in tidied format with the following column names: counts,gene,sample,conditions'),
     make_option(c("-o", "--output"), default="testprots.tsv", dest='output',help = "Prefix to add to output files"),
     make_option(c('-d','--idtype'),default='entrez',dest='idtype',help='Type of gene identifier'),
-    make_option(c('-c','--condition'),dest='condition',default=NULL,help='Condition of interest to find differentially regulated proteins')
+    make_option(c('-c','--condition'),dest='condition',default=NULL,help='Comma-delimited list of condition of interest to find differentially regulated proteins')
   )
 
   args=parse_args(OptionParser(option_list = option_list))
@@ -31,7 +31,7 @@ main<-function(){
 	  sep=','
   else
 	  sep='\t'
-  tidied.df<-read.table(tab,sep=sep,header=T)
+  tidied.df<-unique(read.table(tab,sep=sep,header=T))
 
   req.names=c('counts','gene','sample','conditions')
 

@@ -4,7 +4,7 @@
 \alias{loadDrugGraph}
 \title{\code{loadDrugGraph} Identifies drugs in a}
 \usage{
-loadDrugGraph()
+loadDrugGraph(minQuant = 2)
 }
 \value{
 
