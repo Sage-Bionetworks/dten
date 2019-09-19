@@ -46,7 +46,7 @@ main<-function(){
 
   cond=args$condition
   if(is.null(cond))
-      cond<-setdiff(unique(tidied.df$conditions),c(NA,""))
+      cond<-setdiff(unique(tidied.df$conditions),c(NA,"","Other","Ganglioglioma","Ependymoma"))
   print(cond)
   lapply(cond,function(co){
       res<-dten::getProteinsFromGenesCondition(tidied.df,co,args$idtype)
