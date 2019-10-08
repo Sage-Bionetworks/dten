@@ -107,25 +107,26 @@ getNetSummaries<-function(netlist,synids=NULL){
 
   distinct.genes<-findDistinctGenes(nets)
   distinct.drugs<-findDistinctDrugs(nets)
-  distinct.terms<-findDistinctTerms(enrichs)
+#  distinct.terms<-findDistinctTerms(enrichs)
 
   ##what do i want to see?
   require(dplyr)
-  term.tab<-do.call(rbind,lapply(1:length(netlist),function(x){
-      print(x)
-    print(dim(distinct.terms[[x]]))
-      if(is.null(dim(distinct.terms[[x]]))||nrow(distinct.terms[[x]])==0){
-          return(NULL)
-      }
-      params[[x]]$mu<-params[[x]][[3]]
-    res<-dplyr::select(distinct.terms[[x]],Cluster,Term,Overlap,Adjusted.P.value,Genes,DrugsByBetweenness)
-    data.frame(Condition=rep(netnames[[x]], nrow(res)),
-               mu=rep(params[[x]]$mu, nrow(res)),
-               beta=rep(params[[x]]$b, nrow(res)),
-               w=rep(params[[x]]$w,nrow(res)),
-               network=rep(synids[[x]],nrow(res)),
-               res)
-  }))
+  ##removed teh term tab for now
+  ## term.tab<-do.call(rbind,lapply(1:length(netlist),function(x){
+  ##     print(x)
+  ##   print(dim(distinct.terms[[x]]))
+  ##     if(is.null(dim(distinct.terms[[x]]))||nrow(distinct.terms[[x]])==0){
+  ##         return(NULL)
+  ##     }
+  ##     params[[x]]$mu<-params[[x]][[3]]
+  ##   res<-dplyr::select(distinct.terms[[x]],Cluster,Term,Overlap,Adjusted.P.value,Genes,DrugsByBetweenness)
+  ##   data.frame(Condition=rep(netnames[[x]], nrow(res)),
+  ##              mu=rep(params[[x]]$mu, nrow(res)),
+  ##              beta=rep(params[[x]]$b, nrow(res)),
+  ##              w=rep(params[[x]]$w,nrow(res)),
+  ##              network=rep(synids[[x]],nrow(res)),
+  ##              res)
+  ## }))
 
   unique.nodes<-do.call(rbind,lapply(1:length(netlist),function(x){
           params[[x]]$mu<-params[[x]][[3]]
@@ -149,7 +150,7 @@ getNetSummaries<-function(netlist,synids=NULL){
        rbind(df1,df2)
     }))
 
-  return(list(terms=term.tab,nodes=unique.nodes))
+  return(list(terms=data.frame(),nodes=unique.nodes))
 
 
 

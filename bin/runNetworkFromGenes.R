@@ -34,11 +34,11 @@ main<-function(){
 
   enrich.res=data.frame()
   net=pcsf.res
-  try({
-      enrich=PCSF::enrichment_analysis(pcsf.res)
-      enrich.res<-enrich$enrichment
-      net=enrich$subnet
-  })
+#  try({
+#      enrich=PCSF::enrichment_analysis(pcsf.res)
+#      enrich.res<-enrich$enrichment
+#      net=enrich$subnet
+#  })
 
 
   res.obj<-list(network=net,enrichment=enrich.res,params=list(w=args$w,b=args$b,mu=args$mu),condition=condition)
